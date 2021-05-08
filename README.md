@@ -27,6 +27,14 @@ $ docker run --rm godwoken-prebuilds godwoken --version
 $ docker run --rm godwoken-prebuilds gw-tools --version
 ```
 
+CKB, ckb-cli, and ckb-indexer are also available this way:
+
+```bash
+$ docker run --rm godwoken-prebuilds ckb --version
+$ docker run --rm godwoken-prebuilds ckb-cli --version
+$ docker run --rm godwoken-prebuilds ckb-indexer --version
+```
+
 All the scripts used by godwoken can be found at `/scripts` folder:
 
 ```bash

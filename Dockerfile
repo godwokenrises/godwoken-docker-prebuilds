@@ -9,8 +9,20 @@ RUN cargo install moleculec --version 0.6.1
 COPY ./godwoken /godwoken
 RUN cd /godwoken && rustup component add rustfmt && cargo build --release
 
+RUN mkdir /ckb
+RUN cd /ckb && curl -LO https://github.com/nervosnetwork/ckb/releases/download/v0.41.0/ckb_v0.41.0_x86_64-unknown-linux-gnu.tar.gz
+RUN cd /ckb && tar xzf ckb_v0.41.0_x86_64-unknown-linux-gnu.tar.gz
+
+RUN mkdir /ckb-indexer
+RUN cd /ckb-indexer && curl -LO https://github.com/nervosnetwork/ckb-indexer/releases/download/v0.2.0/ckb-indexer-0.2.0-linux.zip
+RUN cd /ckb-indexer && unzip ckb-indexer-0.2.0-linux.zip && tar xzf ckb-indexer-linux-x86_64.tar.gz
+
 FROM node:14-buster
 MAINTAINER Xuejie Xiao <x@nervos.org>
+
+COPY --from=builder /ckb/ckb_v0.41.0_x86_64-unknown-linux-gnu/ckb /bin/ckb
+COPY --from=builder /ckb/ckb_v0.41.0_x86_64-unknown-linux-gnu/ckb-cli /bin/ckb-cli
+COPY --from=builder /ckb-indexer/ckb-indexer /bin/ckb-indexer
 
 COPY --from=builder /godwoken/target/release/godwoken /bin/godwoken
 COPY --from=builder /godwoken/target/release/gw-tools /bin/gw-tools
