@@ -10,6 +10,7 @@ $ git clone --recursive https://github.com/xxuejie/godwoken-docker-prebuilds
 $ cd godwoken-docker-prebuilds
 $ cd godwoken-polyjuice && make all-via-docker && cd ..
 $ cd godwoken-scripts && cd c && make && cd .. && capsule build --release --debug-output && cd ..
+$ cd clerkb && yarn && make all-via-docker && cd ..
 $ docker build . -t godwoken-prebuilds
 ```
 
@@ -64,6 +65,9 @@ $ docker run --rm godwoken-prebuilds find /scripts
 /scripts/godwoken-polyjuice/generator_log
 /scripts/godwoken-polyjuice/generator_log.debug
 /scripts/godwoken-polyjuice/generator
+/scripts/clerkb
+/scripts/clerkb/state
+/scripts/clerkb/poa
 ```
 
 Finally, the [Web3 compatible RPC layer](https://github.com/bitrocks/godwoken-web3) can be found at `/godwoken-web3`. All the node dependencies are already installed during docker image building phase, tho you might want to customize `/godwoken-web3/packages/api-server/.env` for database and godwoken RPC URLs.
