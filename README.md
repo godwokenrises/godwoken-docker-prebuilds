@@ -64,7 +64,7 @@ $ docker run --rm godwoken-prebuilds find /scripts
 /scripts/godwoken-scripts/challenge-lock
 /scripts/godwoken-scripts/always-success
 /scripts/godwoken-scripts/custodian-lock
-/scripts/godwoken-scripts/deposition-lock
+/scripts/godwoken-scripts/deposit-lock
 /scripts/godwoken-polyjuice
 /scripts/godwoken-polyjuice/validator_log.debug
 /scripts/godwoken-polyjuice/validator
