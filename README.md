@@ -14,6 +14,15 @@ $ cd clerkb && yarn && make all-via-docker && cd ..
 $ docker build . -t godwoken-prebuilds
 ```
 
+How to upgrade:
+
+```bash
+$ # make sure it pass test..
+$ make test
+$ # build and push to docker-hub, will ask you to enter image tag
+$ make build-push
+```
+
 # Usage
 
 `godwoken` binary resides in `/bin/godwoken`, this is already in PATH so you can do this:
