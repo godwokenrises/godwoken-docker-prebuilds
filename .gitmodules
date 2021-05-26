@@ -10,3 +10,6 @@
 [submodule "godwoken-polyjuice"]
 	path = godwoken-polyjuice
 	url = https://github.com/nervosnetwork/godwoken-polyjuice
+[submodule "clerkb"]
+	path = clerkb
+	url = https://github.com/nervosnetwork/clerkb

@@ -37,6 +37,10 @@ RUN mkdir -p /scripts/godwoken-polyjuice
 COPY godwoken-polyjuice/build/generator* /scripts/godwoken-polyjuice/
 COPY godwoken-polyjuice/build/validator* /scripts/godwoken-polyjuice/
 
+RUN mkdir -p /scripts/clerkb
+COPY clerkb/build/debug/poa /scripts/clerkb/
+COPY clerkb/build/debug/state /scripts/clerkb/
+
 COPY godwoken-web3/package.json /godwoken-web3/package.json
 COPY godwoken-web3/yarn.lock /godwoken-web3/yarn.lock
 RUN cd /godwoken-web3 && yarn
