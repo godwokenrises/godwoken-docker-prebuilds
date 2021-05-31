@@ -11,7 +11,7 @@ check_clerkb_files_exists(){
 check_scripts_files_exists(){
     local -a arr=( 
 		"always-success"  "custodian-lock"   "eth-account-lock"   "meta-contract-generator"  "stake-lock"  "sudt-generator"  "withdrawal-lock" 	
-		"challenge-lock"  "deposit-lock"  "eth-account-lock.debug"  "meta-contract-validator"  "state-validator"  "sudt-validator" 
+		"challenge-lock"  "deposit-lock"  "meta-contract-validator"  "state-validator"  "sudt-validator" 
 	) 
     local path=`pwd`/test-result/scripts/godwoken-scripts
 	check_multiple_files_exists "$path" "${arr[@]}"
@@ -34,7 +34,7 @@ check_multiple_files_exists(){
 	for i in "${arr[@]}" 
 	do 
         if [ "$i" != "$check_path" ]; then # the first one is just the check_path.
-	      [ -f "$i" ] || (echo "failed, $i not found"; exit 1) ;
+	      [ -f "$i" ] && echo "test pass, found $i." || (echo "test failed, $i not found"; exit 1) ;
         fi
     done 
 }
