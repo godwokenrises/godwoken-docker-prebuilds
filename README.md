@@ -52,7 +52,6 @@ $ docker run --rm godwoken-prebuilds find /scripts
 /scripts
 /scripts/godwoken-scripts
 /scripts/godwoken-scripts/eth-account-lock
-/scripts/godwoken-scripts/eth-account-lock.debug
 /scripts/godwoken-scripts/.keep
 /scripts/godwoken-scripts/sudt-validator
 /scripts/godwoken-scripts/meta-contract-validator
