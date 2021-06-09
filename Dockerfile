@@ -17,7 +17,7 @@ RUN mkdir /ckb-indexer
 RUN cd /ckb-indexer && curl -LO https://github.com/nervosnetwork/ckb-indexer/releases/download/v0.2.0/ckb-indexer-0.2.0-linux.zip
 RUN cd /ckb-indexer && unzip ckb-indexer-0.2.0-linux.zip && tar xzf ckb-indexer-linux-x86_64.tar.gz
 
-FROM node:14-buster
+FROM node:14-buster 
 MAINTAINER Xuejie Xiao <x@nervos.org>
 
 COPY --from=builder /ckb/ckb_v0.41.0_x86_64-unknown-linux-gnu/ckb /bin/ckb
@@ -40,11 +40,6 @@ COPY godwoken-polyjuice/build/validator* /scripts/godwoken-polyjuice/
 RUN mkdir -p /scripts/clerkb
 COPY clerkb/build/debug/poa /scripts/clerkb/
 COPY clerkb/build/debug/state /scripts/clerkb/
-
-COPY godwoken-web3/package.json /godwoken-web3/package.json
-COPY godwoken-web3/yarn.lock /godwoken-web3/yarn.lock
-RUN cd /godwoken-web3 && yarn
-COPY godwoken-web3/. /godwoken-web3/.
 
 EXPOSE 3000
 
