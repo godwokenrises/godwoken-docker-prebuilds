@@ -78,4 +78,4 @@ $ docker run --rm godwoken-prebuilds find /scripts
 /scripts/clerkb/poa
 ```
 
-Finally, the [Web3 compatible RPC layer](https://github.com/bitrocks/godwoken-web3) can be found at `/godwoken-web3`. All the node dependencies are already installed during docker image building phase, tho you might want to customize `/godwoken-web3/packages/api-server/.env` for database and godwoken RPC URLs.
+Finally, the original [Web3 compatible RPC layer](https://github.com/nervosnetwork/godwoken-web3) is move to [this js-prebuild image](https://github.com/RetricSu/godwoken-docker-js-prebuilds). 

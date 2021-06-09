@@ -1,9 +1,6 @@
 [submodule "godwoken"]
 	path = godwoken
 	url = https://github.com/nervosnetwork/godwoken
-[submodule "godwoken-web3"]
-	path = godwoken-web3
-	url = https://github.com/nervosnetwork/godwoken-web3
 [submodule "godwoken-scripts"]
 	path = godwoken-scripts
 	url = https://github.com/nervosnetwork/godwoken-scripts
