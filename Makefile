@@ -9,7 +9,7 @@ build-components:
 build-push:
 	make build-components
 	@read -p "Please Enter New Image Tag: " VERSION ; \
-	docker build . -t nervos/godwoken-prebuilds:$$VERSION
+	docker build . -t nervos/godwoken-prebuilds:$$VERSION ; \
 	docker push nervos/godwoken-prebuilds:$$VERSION
 
 test:
