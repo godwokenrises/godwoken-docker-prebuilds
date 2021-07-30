@@ -10,7 +10,7 @@ check_clerkb_files_exists(){
 
 check_scripts_files_exists(){
     local -a arr=( 
-		"always-success"  "custodian-lock"   "eth-account-lock"   "meta-contract-generator"  "stake-lock"  "sudt-generator"  "withdrawal-lock" 	
+		"always-success"  "custodian-lock"   "eth-account-lock"  "tron-account-lock" "meta-contract-generator"  "stake-lock"  "sudt-generator"  "withdrawal-lock" 	
 		"challenge-lock"  "deposit-lock"  "meta-contract-validator"  "state-validator"  "sudt-validator" 
 	) 
     local path=`pwd`/test-result/scripts/godwoken-scripts
