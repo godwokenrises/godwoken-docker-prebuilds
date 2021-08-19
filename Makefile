@@ -2,7 +2,10 @@ SHELL := /bin/bash
 
 build-components:
 	git submodule update --init --recursive
+	cd godwoken-polyjuice && git submodule update --init --recursive && cd ..
+	cd godwoken-polyjuice; make clean-via-docker; cd ..
 	cd godwoken-polyjuice && make all-via-docker && cd ..
+	cd godwoken-scripts && git submodule update --init --recursive && cd ..
 	cd godwoken-scripts && cd c && make && cd .. && capsule build --release --debug-output && cd ..
 	cd clerkb && yarn && make all-via-docker && cd ..
 
