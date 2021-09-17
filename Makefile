@@ -1,13 +1,40 @@
 SHELL := /bin/bash
 
-build-components:
-	git submodule update --init --recursive
-	cd godwoken-polyjuice && git submodule update --init --recursive && cd ..
-	cd godwoken-polyjuice; make clean-via-docker; cd ..
-	cd godwoken-polyjuice && make all-via-docker && cd ..
-	cd godwoken-scripts && git submodule update --init --recursive && cd ..
-	cd godwoken-scripts && cd c && make && cd .. && capsule build --release --debug-output && cd ..
-	cd clerkb && yarn && make all-via-docker && cd ..
+# components repos
+GODWOKEN_REPO := https://github.com/nervosnetwork/godwoken.git
+GODWOKEN_SCRIPTS_REPO := https://github.com/nervosnetwork/godwoken-scripts.git
+POLYJUICE_REPO := https://github.com/nervosnetwork/godwoken-polyjuice.git
+CLERKB_REPO := https://github.com/nervosnetwork/clerkb.git
+
+# components tags
+GODWOKEN_REF := v0.6.4-rc4
+GODWOKEN_SCRIPTS_REF := v0.8.1-rc1
+POLYJUICE_REF := v0.8.4
+CLERKB_REF := v0.4.0
+
+define prepare_repo
+	if [ -d "build/$(3)" ]; then\
+		cd build/$(3);\
+		git reset --hard;\
+		git fetch --all;\
+		git checkout $(2);\
+		git submodule update --init --recursive;\
+	else\
+		git clone --recursive $(1) -b $(2) build/$(3);\
+	fi
+endef
+
+prepare-repos:
+	mkdir -p build
+	$(call prepare_repo,$(GODWOKEN_REPO),$(GODWOKEN_REF),godwoken)
+	$(call prepare_repo,$(GODWOKEN_SCRIPTS_REPO),$(GODWOKEN_SCRIPTS_REF),godwoken-scripts)
+	$(call prepare_repo,$(POLYJUICE_REPO),$(POLYJUICE_REF),godwoken-polyjuice)
+	$(call prepare_repo,$(CLERKB_REPO),$(CLERKB_REF),clerkb)
+
+build-components: prepare-repos
+	cd build/godwoken-polyjuice && make dist && cd -
+	cd build/godwoken-scripts && cd c && make && cd .. && capsule build --release --debug-output && cd ../..
+	cd build/clerkb && yarn && make all-via-docker && cd ../..
 
 build-push:
 	make build-components

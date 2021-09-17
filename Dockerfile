@@ -6,7 +6,7 @@ RUN apt-get -y install --no-install-recommends llvm-dev clang libclang-dev libss
 
 RUN cargo install moleculec --version 0.6.1
 
-COPY ./godwoken /godwoken
+COPY ./build/godwoken /godwoken
 RUN cd /godwoken && rustup component add rustfmt && cargo build --release
 
 RUN mkdir /ckb
@@ -28,18 +28,18 @@ COPY --from=builder /godwoken/target/release/godwoken /bin/godwoken
 COPY --from=builder /godwoken/target/release/gw-tools /bin/gw-tools
 
 RUN mkdir -p /scripts/godwoken-scripts
-COPY godwoken-scripts/build/release/* /scripts/godwoken-scripts/
-COPY godwoken-scripts/c/build/*-generator /scripts/godwoken-scripts/
-COPY godwoken-scripts/c/build/*-validator /scripts/godwoken-scripts/
-COPY godwoken-scripts/c/build/account_locks/* /scripts/godwoken-scripts/
+COPY build/godwoken-scripts/build/release/* /scripts/godwoken-scripts/
+COPY build/godwoken-scripts/c/build/*-generator /scripts/godwoken-scripts/
+COPY build/godwoken-scripts/c/build/*-validator /scripts/godwoken-scripts/
+COPY build/godwoken-scripts/c/build/account_locks/* /scripts/godwoken-scripts/
 
 RUN mkdir -p /scripts/godwoken-polyjuice
-COPY godwoken-polyjuice/build/generator* /scripts/godwoken-polyjuice/
-COPY godwoken-polyjuice/build/validator* /scripts/godwoken-polyjuice/
+COPY build/godwoken-polyjuice/build/generator* /scripts/godwoken-polyjuice/
+COPY build/godwoken-polyjuice/build/validator* /scripts/godwoken-polyjuice/
 
 RUN mkdir -p /scripts/clerkb
-COPY clerkb/build/debug/poa /scripts/clerkb/
-COPY clerkb/build/debug/state /scripts/clerkb/
+COPY build/clerkb/build/debug/poa /scripts/clerkb/
+COPY build/clerkb/build/debug/state /scripts/clerkb/
 
 EXPOSE 3000
 
