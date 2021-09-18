@@ -1,0 +1,109 @@
+name: Docker
+
+on:
+  # schedule:
+  #   - cron: '22 3 * * *'
+  push:
+    branches: [ main, 'docker-publish' ]
+    # Publish semver tags as releases.
+    tags: [ 'v*.*.*' ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: ghcr.io
+  # github.repository as <account>/<repo>
+  IMAGE_NAME: godwoken-prebuilds
+
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            ~/.cargo/bin
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('Cargo.lock') }}
+
+      - name: Install Rust components
+        run: rustup component add rustfmt && rustup component add clippy
+      - name: Install moleculec
+        run: |
+          test "$(moleculec --version)" = "Moleculec 0.6.1" \
+          || CARGO_TARGET_DIR=target/ cargo install moleculec --version 0.6.1
+      - name: Install capsule
+        env:
+          CAPSULE_VERSION: v0.4.6
+        run: |
+          which capsule \
+          || curl -OL https://github.com/nervosnetwork/capsule/releases/download/${CAPSULE_VERSION}/capsule_${CAPSULE_VERSION}_x86_64-linux.tar.gz \
+          && tar xf capsule_${CAPSULE_VERSION}_x86_64-linux.tar.gz \
+          && mv capsule_${CAPSULE_VERSION}_x86_64-linux/capsule ~/.cargo/bin/
+          capsule --version
+
+      # Login against a Docker registry except on PR
+      # https://github.com/docker/login-action
+      # The GHP_CRT secret is password or personal access token with `write:packages` access scope
+      - name: Log into registry ${{ env.REGISTRY }}
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHP_CRT }}
+
+      # Extract metadata (tags, labels) for Docker
+      # https://github.com/docker/metadata-action
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}
+
+      - name: debug
+        run: |
+          echo "tags: ${{ steps.meta.outputs.tags }}"
+          echo "labels: ${{ steps.meta.outputs.labels }}"
+          docker pull ghcr.io/flouse/godwoken-prebuilds:docker-publish
+
+      - name: build
+        run: make build-components
+
+      # Build and push Docker image with Buildx (don't push on PR)
+      # https://github.com/docker/build-push-action
+      # - name: Build and push Docker image
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     context: .
+      #     push: ${{ github.event_name != 'pull_request' }}
+      #     tags: ${{ steps.meta.outputs.tags }}
+      #     labels: ${{ steps.meta.outputs.labels }}
+
+      # - name: Check versions of the binaries used by Godwoken
+      #   run: |
+      # FIXME: /lib/x86_64-linux-gnu/libm.so.6: version `GLIBC_2.29' not found (required by godwoken)
+      #     docker run --rm godwoken-prebuilds godwoken --version
+      #     docker run --rm godwoken-prebuilds gw-tools --version
+      ###
+      #     docker run --rm godwoken-prebuilds ckb --version
+      #     docker run --rm godwoken-prebuilds ckb-cli --version
+      #     docker run --rm godwoken-prebuilds ckb-indexer --version
+      #     docker run --rm godwoken-prebuilds find /scripts
+
+      - name: Setup tmate session
+        if: ${{ failure() }}
+        uses: mxschmitt/action-tmate@v3
+        timeout-minutes: 30
