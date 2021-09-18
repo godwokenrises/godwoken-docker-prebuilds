@@ -53,6 +53,4 @@ COPY build/godwoken-polyjuice/build/validator* /scripts/godwoken-polyjuice/
 COPY build/clerkb/build/debug/poa /scripts/clerkb/
 COPY build/clerkb/build/debug/state /scripts/clerkb/
 
-EXPOSE 3000
-
 CMD [ "godwoken", "--version" ]
