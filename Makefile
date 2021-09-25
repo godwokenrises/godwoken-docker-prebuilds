@@ -7,7 +7,7 @@ POLYJUICE_REPO := https://github.com/nervosnetwork/godwoken-polyjuice.git
 CLERKB_REPO := https://github.com/nervosnetwork/clerkb.git
 
 # components tags
-GODWOKEN_REF := v0.6.4-rc4
+GODWOKEN_REF := v0.6.4-rc4.hotfix-1
 GODWOKEN_SCRIPTS_REF := v0.8.1-rc1
 POLYJUICE_REF := v0.8.4
 CLERKB_REF := v0.4.0
