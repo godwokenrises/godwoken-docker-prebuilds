@@ -17,9 +17,11 @@ RUN mkdir /ckb-indexer
 RUN cd /ckb-indexer && curl -LO https://github.com/nervosnetwork/ckb-indexer/releases/download/v0.2.0/ckb-indexer-0.2.0-linux.zip
 RUN cd /ckb-indexer && unzip ckb-indexer-0.2.0-linux.zip && tar xzf ckb-indexer-linux-x86_64.tar.gz
 
-FROM node:14-buster 
+FROM ubuntu:21.04
 MAINTAINER Xuejie Xiao <x@nervos.org>
 
+RUN apt-get update -y
+RUN apt-get install -y curl
 COPY --from=builder /ckb/ckb_v0.41.0_x86_64-unknown-linux-gnu/ckb /bin/ckb
 COPY --from=builder /ckb/ckb_v0.41.0_x86_64-unknown-linux-gnu/ckb-cli /bin/ckb-cli
 COPY --from=builder /ckb-indexer/ckb-indexer /bin/ckb-indexer
