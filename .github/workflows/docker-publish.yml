@@ -4,7 +4,7 @@ on:
   # schedule:
   #   - cron: '22 3 * * *'
   push:
-    branches: [ main, 'docker-publish' ]
+    branches: [ main, 'docker-publish*' ]
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
   pull_request:
@@ -42,8 +42,8 @@ jobs:
         run: rustup component add rustfmt && rustup component add clippy
       - name: Install moleculec
         run: |
-          test "$(moleculec --version)" = "Moleculec 0.6.1" \
-          || CARGO_TARGET_DIR=target/ cargo install moleculec --version 0.6.1
+          test "$(moleculec --version)" = "Moleculec 0.7.2" \
+          || CARGO_TARGET_DIR=target/ cargo install moleculec --version 0.7.2 --force
       - name: Install capsule
         env:
           CAPSULE_VERSION: v0.4.6
@@ -77,7 +77,6 @@ jobs:
         run: |
           echo "tags: ${{ steps.meta.outputs.tags }}"
           echo "labels: ${{ steps.meta.outputs.labels }}"
-          docker pull ghcr.io/flouse/godwoken-prebuilds:docker-publish
 
       - name: build
         run: make build-components
