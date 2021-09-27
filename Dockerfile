@@ -4,7 +4,7 @@ MAINTAINER Xuejie Xiao <x@nervos.org>
 RUN apt-get update
 RUN apt-get -y install --no-install-recommends llvm-dev clang libclang-dev libssl-dev
 
-RUN cargo install moleculec --version 0.6.1
+RUN cargo install moleculec --version 0.7.2
 
 COPY ./build/godwoken /godwoken
 RUN cd /godwoken && rustup component add rustfmt && cargo build --release
