@@ -71,7 +71,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: ${{ env.REGISTRY }}${{ github.repository_owner }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}${{ github.repository_owner == 'nervosnetwork' && 'nervos' || github.repository_owner }}/${{ env.IMAGE_NAME }}
 
       - name: build
         run: make build-components
