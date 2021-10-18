@@ -20,29 +20,37 @@ RUN cd /ckb-indexer && unzip ckb-indexer-0.3.0-linux.zip && tar xzf ckb-indexer-
 FROM ubuntu:21.04
 MAINTAINER Xuejie Xiao <x@nervos.org>
 
-RUN apt-get update -y
-RUN apt-get install -y curl
+RUN mkdir -p /scripts/godwoken-scripts \
+ && mkdir -p /scripts/godwoken-polyjuice \
+ && mkdir -p /scripts/clerkb
+
+RUN apt-get update \
+ && apt-get dist-upgrade -y \
+ && apt-get install -y curl \
+ && apt-get clean \
+ && echo 'Finished installing OS updates'
+
+# ckb
 COPY --from=builder /ckb/ckb_v0.100.0_x86_64-unknown-linux-gnu/ckb /bin/ckb
 COPY --from=builder /ckb/ckb_v0.100.0_x86_64-unknown-linux-gnu/ckb-cli /bin/ckb-cli
 COPY --from=builder /ckb-indexer/ckb-indexer /bin/ckb-indexer
 
+# godwoken
 COPY --from=builder /godwoken/target/release/godwoken /bin/godwoken
 COPY --from=builder /godwoken/target/release/gw-tools /bin/gw-tools
 
-RUN mkdir -p /scripts/godwoken-scripts
+# /scripts/godwoken-scripts
 COPY build/godwoken-scripts/build/release/* /scripts/godwoken-scripts/
 COPY build/godwoken-scripts/c/build/*-generator /scripts/godwoken-scripts/
 COPY build/godwoken-scripts/c/build/*-validator /scripts/godwoken-scripts/
 COPY build/godwoken-scripts/c/build/account_locks/* /scripts/godwoken-scripts/
 
-RUN mkdir -p /scripts/godwoken-polyjuice
+# /scripts/godwoken-polyjuice
 COPY build/godwoken-polyjuice/build/generator* /scripts/godwoken-polyjuice/
 COPY build/godwoken-polyjuice/build/validator* /scripts/godwoken-polyjuice/
 
-RUN mkdir -p /scripts/clerkb
+# /scripts/clerkb
 COPY build/clerkb/build/debug/poa /scripts/clerkb/
 COPY build/clerkb/build/debug/state /scripts/clerkb/
-
-EXPOSE 3000
 
 CMD [ "godwoken", "--version" ]
