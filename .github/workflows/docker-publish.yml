@@ -5,7 +5,7 @@ on:
   # schedule:
   #   - cron: '22 3 * * *'
   push:
-    branches: [ main, 'docker-publish*' ]
+    branches: [ main, 'docker-publish*', 'v0.7.*' ]
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
   pull_request:
