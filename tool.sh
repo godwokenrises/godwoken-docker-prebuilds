@@ -18,7 +18,8 @@ check_scripts_files_exists(){
 }
 
 check_polyjuice_files_exists(){
-    local -a arr=( 
+    local -a arr=(
+        "generator.aot"    "generator_log.aot"    "generator.asm"    "generator_log.asm"
 		"generator"        "generator_log"        "validator"        "validator_log"
         "generator.debug"  "generator_log.debug"  "validator.debug"  "validator_log.debug"
 	) 
