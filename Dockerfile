@@ -14,8 +14,8 @@ RUN cd /ckb && curl -LO https://github.com/nervosnetwork/ckb/releases/download/v
 RUN cd /ckb && tar xzf ckb_v0.100.0_x86_64-unknown-linux-gnu.tar.gz
 
 RUN mkdir /ckb-indexer
-RUN cd /ckb-indexer && curl -LO https://github.com/nervosnetwork/ckb-indexer/releases/download/v0.3.0/ckb-indexer-0.3.0-linux.zip
-RUN cd /ckb-indexer && unzip ckb-indexer-0.3.0-linux.zip && tar xzf ckb-indexer-linux-x86_64.tar.gz
+RUN cd /ckb-indexer && curl -LO https://github.com/nervosnetwork/ckb-indexer/releases/download/v0.3.2/ckb-indexer-0.3.2-linux.zip
+RUN cd /ckb-indexer && unzip ckb-indexer-0.3.2-linux.zip && tar xzf ckb-indexer-linux-x86_64.tar.gz
 
 FROM ubuntu:21.04
 MAINTAINER Xuejie Xiao <x@nervos.org>
