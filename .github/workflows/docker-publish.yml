@@ -108,8 +108,3 @@ jobs:
       #     docker run --rm godwoken-prebuilds ckb-cli --version
       #     docker run --rm godwoken-prebuilds ckb-indexer --version
       #     docker run --rm godwoken-prebuilds find /scripts
-
-      - name: Setup tmate session
-        if: ${{ failure() }}
-        uses: mxschmitt/action-tmate@v3
-        timeout-minutes: 30
