@@ -1,13 +1,13 @@
 SHELL := /bin/bash
 
 # components repos
-GODWOKEN_REPO := https://github.com/flouse/godwoken.git
+GODWOKEN_REPO := https://github.com/nervosnetwork/godwoken.git
 GODWOKEN_SCRIPTS_REPO := https://github.com/nervosnetwork/godwoken-scripts.git
 POLYJUICE_REPO := https://github.com/nervosnetwork/godwoken-polyjuice.git
 CLERKB_REPO := https://github.com/nervosnetwork/clerkb.git
 
 # components tags
-GODWOKEN_REF := generator-ahead-of-time-compilation
+GODWOKEN_REF := develop
 GODWOKEN_SCRIPTS_REF := v0.8.4
 POLYJUICE_REF := generator-ahead-of-time-compilation
 CLERKB_REF := v0.4.0
