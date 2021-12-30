@@ -1,11 +1,11 @@
 name: Docker
 
 on:
-  # TODO: build nightly image
-  # schedule:
-  #   - cron: '22 3 * * *'
+  # build image by develop branch nightly
+  schedule:
+  - cron: '30 04 * * *'
   push:
-    branches: [ main, 'docker-publish*' ]
+    branches: [ main, 'develop' ]
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
   pull_request:
@@ -79,7 +79,7 @@ jobs:
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image to ${{ env.REGISTRY }}${{ github.repository_owner }}/${{ env.IMAGE_NAME }}
-        if: ${{ github.repository_owner != 'nervosnetwork'}}
+        if: ${{ github.repository_owner != 'nervosnetwork' || github.event_name == 'schedule' }}
         uses: docker/build-push-action@v2
         with:
           context: .
