@@ -21,6 +21,10 @@ check_polyjuice_files_exists(){
     local -a arr=( 
 		"generator"        "generator_log"        "validator"        "validator_log"
         "generator.debug"  "generator_log.debug"  "validator.debug"  "validator_log.debug"
+        "generator.aot"    "generator_log.aot"    "validator.aot"    "validator_log.aot"
+        
+        "eth_addr_reg_generator"        "eth_addr_reg_validator"
+        "eth_addr_reg_generator.debug"  "eth_addr_reg_validator.debug"
 	) 
     local path=`pwd`/test-result/scripts/godwoken-polyjuice
     check_multiple_files_exists "$path" "${arr[@]}" 

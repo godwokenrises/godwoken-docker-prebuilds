@@ -46,8 +46,8 @@ COPY build/godwoken-scripts/c/build/*-validator /scripts/godwoken-scripts/
 COPY build/godwoken-scripts/c/build/account_locks/* /scripts/godwoken-scripts/
 
 # /scripts/godwoken-polyjuice
-COPY build/godwoken-polyjuice/build/generator* /scripts/godwoken-polyjuice/
-COPY build/godwoken-polyjuice/build/validator* /scripts/godwoken-polyjuice/
+COPY build/godwoken-polyjuice/build/*generator* /scripts/godwoken-polyjuice/
+COPY build/godwoken-polyjuice/build/*validator* /scripts/godwoken-polyjuice/
 
 # /scripts/clerkb
 COPY build/clerkb/build/debug/poa /scripts/clerkb/
