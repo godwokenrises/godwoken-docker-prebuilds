@@ -1,9 +1,9 @@
 name: Docker
 
 on:
-  # build image by develop branch nightly
+  # Build v1.0.x image every 12 hours
   schedule:
-  - cron: '30 04 * * *'
+  - cron: '22 */12 * * *'
   push:
     branches: [ main, 'develop', 'v1*' ]
     # Publish semver tags as releases.
