@@ -21,8 +21,7 @@ FROM ubuntu:21.04
 MAINTAINER Xuejie Xiao <x@nervos.org>
 
 RUN mkdir -p /scripts/godwoken-scripts \
- && mkdir -p /scripts/godwoken-polyjuice \
- && mkdir -p /scripts/clerkb
+ && mkdir -p /scripts/godwoken-polyjuice
 
 RUN apt-get update \
  && apt-get dist-upgrade -y \
@@ -45,12 +44,11 @@ COPY build/godwoken-scripts/c/build/*-generator /scripts/godwoken-scripts/
 COPY build/godwoken-scripts/c/build/*-validator /scripts/godwoken-scripts/
 COPY build/godwoken-scripts/c/build/account_locks/* /scripts/godwoken-scripts/
 
+# /scripts/omni-lock
+COPY build/ckb-production-scripts/build/omni_lock /scripts/godwoken-scripts/
+
 # /scripts/godwoken-polyjuice
 COPY build/godwoken-polyjuice/build/*generator* /scripts/godwoken-polyjuice/
 COPY build/godwoken-polyjuice/build/*validator* /scripts/godwoken-polyjuice/
-
-# /scripts/clerkb
-COPY build/clerkb/build/debug/poa /scripts/clerkb/
-COPY build/clerkb/build/debug/state /scripts/clerkb/
 
 CMD [ "godwoken", "--version" ]

@@ -1,17 +1,14 @@
 #!/bin/bash
 
-check_clerkb_files_exists(){
-    local -a arr=( 
-		"poa"  "state"
-    ) 
-	local path=`pwd`/test-result/scripts/clerkb
-	check_multiple_files_exists "$path" "${arr[@]}"
-}
-
 check_scripts_files_exists(){
     local -a arr=( 
-		"always-success"  "custodian-lock"   "eth-account-lock"  "tron-account-lock" "meta-contract-generator"  "stake-lock"  "sudt-generator"  "withdrawal-lock" 	
-		"challenge-lock"  "deposit-lock"  "meta-contract-validator"  "state-validator"  "sudt-validator" 
+        "eth-account-lock"   "deposit-lock"     "custodian-lock"  "stake-lock"
+        "tron-account-lock"  "withdrawal-lock"  "challenge-lock"  "omni_lock"
+		
+        "always-success"     "state-validator"
+        
+        "meta-contract-generator"  "sudt-generator"  
+		"meta-contract-validator"  "sudt-validator" 
 	) 
     local path=`pwd`/test-result/scripts/godwoken-scripts
 	check_multiple_files_exists "$path" "${arr[@]}"

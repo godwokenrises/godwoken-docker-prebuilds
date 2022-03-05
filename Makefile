@@ -4,13 +4,13 @@ SHELL := /bin/bash
 GODWOKEN_REPO := https://github.com/zeroqn/godwoken.git
 GODWOKEN_SCRIPTS_REPO := https://github.com/nervosnetwork/godwoken-scripts.git
 POLYJUICE_REPO := https://github.com/nervosnetwork/godwoken-polyjuice.git
-CLERKB_REPO := https://github.com/nervosnetwork/clerkb.git
+OMNI_LOCK_REPO := https://github.com/nervosnetwork/ckb-production-scripts
 
 # components tags
 GODWOKEN_REF := feat-omni-rollup-cell-lock
 GODWOKEN_SCRIPTS_REF := compatibility-breaking-changes
 POLYJUICE_REF := v1.0.0-alpha
-CLERKB_REF := v0.4.0
+OMNI_LOCK_REF := rc_lock
 
 define prepare_repo
 	if [ -d "build/$(3)" ]; then\
@@ -18,9 +18,9 @@ define prepare_repo
 		git reset --hard;\
 		git fetch --all;\
 		git checkout $(2);\
-		git submodule update --init --recursive;\
+		git submodule update --init --recursive --depth=1;\
 	else\
-		git clone --recursive $(1) -b $(2) build/$(3);\
+		git clone --depth=1 --recursive $(1) -b $(2) build/$(3);\
 	fi
 endef
 
@@ -29,12 +29,12 @@ prepare-repos:
 	$(call prepare_repo,$(GODWOKEN_REPO),$(GODWOKEN_REF),godwoken)
 	$(call prepare_repo,$(GODWOKEN_SCRIPTS_REPO),$(GODWOKEN_SCRIPTS_REF),godwoken-scripts)
 	$(call prepare_repo,$(POLYJUICE_REPO),$(POLYJUICE_REF),godwoken-polyjuice)
-	$(call prepare_repo,$(CLERKB_REPO),$(CLERKB_REF),clerkb)
+	$(call prepare_repo,$(OMNI_LOCK_REPO),$(OMNI_LOCK_REF),ckb-production-scripts)
 
 build-components: prepare-repos
 	cd build/godwoken-polyjuice && make dist && cd -
 	cd build/godwoken-scripts && cd c && make && cd .. && capsule build --release --debug-output && cd ../..
-	cd build/clerkb && yarn && make all-via-docker && cd ../..
+	cd build/ckb-production-scripts && make all-via-docker
 
 build-push:
 	make build-components
@@ -57,19 +57,14 @@ test:
 test-files:
 	echo "start checking build result..."
 # compare scripts files
-	make test-clerkb-files
 	make test-scripts-files
 	make test-polyjuice-files
 # compare bin files
 	cd `pwd`/test-result/bin && ./godwoken --version && ./gw-tools --version
 	[ -e "test-result" ] && rm -rf test-result
 
-test-clerkb-files:
-	source tool.sh && check_clerkb_files_exists
-
 test-scripts-files:
 	source tool.sh && check_scripts_files_exists
 
 test-polyjuice-files:
 	source tool.sh && check_polyjuice_files_exists 
-
