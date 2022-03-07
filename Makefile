@@ -1,13 +1,13 @@
 SHELL := /bin/bash
 
 # components repos
-GODWOKEN_REPO := https://github.com/zeroqn/godwoken.git
+GODWOKEN_REPO := https://github.com/nervosnetwork/godwoken.git
 GODWOKEN_SCRIPTS_REPO := https://github.com/nervosnetwork/godwoken-scripts.git
 POLYJUICE_REPO := https://github.com/nervosnetwork/godwoken-polyjuice.git
 OMNI_LOCK_REPO := https://github.com/nervosnetwork/ckb-production-scripts
 
 # components tags
-GODWOKEN_REF := feat-omni-rollup-cell-lock
+GODWOKEN_REF := compatibility-breaking-changes
 GODWOKEN_SCRIPTS_REF := compatibility-breaking-changes
 POLYJUICE_REF := v1.0.0-alpha
 OMNI_LOCK_REF := rc_lock
