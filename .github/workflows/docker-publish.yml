@@ -133,4 +133,4 @@ jobs:
           docker run --rm ${{ env.IMAGE }} ckb --version
           docker run --rm ${{ env.IMAGE }} ckb-cli --version
           docker run --rm ${{ env.IMAGE }} ckb-indexer --version
-          docker run --rm ${{ env.IMAGE }} find /scripts
+          docker run --rm ${{ env.IMAGE }} find /scripts -type f -exec sha1sum {} \;
