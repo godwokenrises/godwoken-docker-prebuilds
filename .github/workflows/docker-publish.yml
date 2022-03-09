@@ -93,14 +93,14 @@ jobs:
           labels: |
             maintainer="Nervos Core Dev <dev@nervos.org>"
             org.opencontainers.image.authors="Nervos Core Dev <dev@nervos.org>"
-            source.component.Godwoken="https://github.com/nervosnetwork/godwoken"
-            source.component.Godwoken-Scripts="https://github.com/nervosnetwork/godwoken-scripts"
-            source.component.Polyjuice="https://github.com/nervosnetwork/godwoken-polyjuice"
-            source.component.omni_lock="https://github.com/nervosnetwork/ckb-production-scripts"
-            ref.component.Godwoken=${{ steps.build.outputs.GODWOKEN_REF }}
-            ref.component.Godwoken-scripts=${{ steps.build.outputs.GODWOKEN_SCRIPTS_REF }}
-            ref.component.Polyjuice=${{ steps.build.outputs.POLYJUICE_REF }}
-            ref.component.omni_lock=${{ steps.build.outputs.OMNI_LOCK_REF }}
+            source.component.godwoken=https://github.com/nervosnetwork/godwoken
+            source.component.godwoken-scripts-Scripts=https://github.com/nervosnetwork/godwoken-scripts
+            source.component.godwoken-polyjuice=https://github.com/nervosnetwork/godwoken-polyjuice
+            source.component.ckb-production-scripts=https://github.com/nervosnetwork/ckb-production-scripts
+            ref.component.godwoken=${{ steps.build.outputs.GODWOKEN_REF }}
+            ref.component.godwoken-scripts=${{ steps.build.outputs.GODWOKEN_SCRIPTS_REF }}
+            ref.component.godwoken-polyjuice=${{ steps.build.outputs.POLYJUICE_REF }}
+            ref.component.ckb-production-scripts=${{ steps.build.outputs.OMNI_LOCK_REF }}
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action

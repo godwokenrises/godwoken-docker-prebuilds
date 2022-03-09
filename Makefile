@@ -26,13 +26,13 @@ endef
 prepare-repos:
 	mkdir -p build
 	$(call prepare_repo,$(GODWOKEN_REPO),$(GODWOKEN_REF),godwoken)
-	echo "::set-output name=GODWOKEN_REF::$(GODWOKEN_REF)-$$(cd build/godwoken && git rev-parse HEAD)" >> versions
+	echo "::set-output name=GODWOKEN_REF::$(GODWOKEN_REF)\ $$(cd build/godwoken && git rev-parse --short HEAD)" >> versions
 	$(call prepare_repo,$(GODWOKEN_SCRIPTS_REPO),$(GODWOKEN_SCRIPTS_REF),godwoken-scripts)
-	echo "::set-output name=GODWOKEN_SCRIPTS_REF::$(GODWOKEN_SCRIPTS_REF)-$$(cd build/godwoken-scripts && git rev-parse HEAD)" >> versions
+	echo "::set-output name=GODWOKEN_SCRIPTS_REF::$(GODWOKEN_SCRIPTS_REF)\ $$(cd build/godwoken-scripts && git rev-parse --short HEAD)" >> versions
 	$(call prepare_repo,$(POLYJUICE_REPO),$(POLYJUICE_REF),godwoken-polyjuice)
-	echo "::set-output name=POLYJUICE_REF::$(POLYJUICE_REF)-$$(cd build/godwoken-polyjuice && git rev-parse HEAD)" >> versions
+	echo "::set-output name=POLYJUICE_REF::$(POLYJUICE_REF)\ $$(cd build/godwoken-polyjuice && git rev-parse --short HEAD)" >> versions
 	$(call prepare_repo,$(OMNI_LOCK_REPO),$(OMNI_LOCK_REF),ckb-production-scripts)
-	echo "::set-output name=OMNI_LOCK_REF::$(OMNI_LOCK_REF)-$$(cd build/ckb-production-scripts && git rev-parse HEAD)" >> versions
+	echo "::set-output name=OMNI_LOCK_REF::$(OMNI_LOCK_REF)\ $$(cd build/ckb-production-scripts && git rev-parse --short HEAD)" >> versions
 
 build-components: prepare-repos
 	cd build/godwoken-polyjuice && make dist && cd -
