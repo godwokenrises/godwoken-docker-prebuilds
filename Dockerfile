@@ -1,5 +1,4 @@
 FROM rust:1 as builder
-MAINTAINER Xuejie Xiao <x@nervos.org>
 
 RUN apt-get update
 RUN apt-get -y install --no-install-recommends llvm-dev clang libclang-dev libssl-dev
@@ -18,7 +17,6 @@ RUN cd /ckb-indexer && curl -LO https://github.com/nervosnetwork/ckb-indexer/rel
 RUN cd /ckb-indexer && unzip ckb-indexer-0.3.2-linux.zip && tar xzf ckb-indexer-linux-x86_64.tar.gz
 
 FROM ubuntu:21.04
-MAINTAINER Xuejie Xiao <x@nervos.org>
 
 RUN mkdir -p /scripts/godwoken-scripts \
  && mkdir -p /scripts/godwoken-polyjuice

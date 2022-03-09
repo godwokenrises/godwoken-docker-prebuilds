@@ -65,6 +65,20 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME || github.actor }}
           password: ${{ secrets.DOCKERHUB_TOKEN || secrets.GHP_CRT }}
 
+      - name: Build components
+        id: build
+        run: |
+          make build-components
+          echo "record the the component's reference to the outputs of this step"
+          cat versions
+
+      - name: test
+        run: |
+          echo ref.component.Godwoken=${{ steps.build.outputs.GODWOKEN_REF }}
+          echo ref.component.Godwoken-scripts=${{ steps.build.outputs.GODWOKEN_SCRIPTS_REF }}
+          echo ref.component.Polyjuice=${{ steps.build.outputs.POLYJUICE_REF }}
+          echo ref.component.omni_lock=${{ steps.build.outputs.OMNI_LOCK_REF }}
+
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
       - name: Extract Docker metadata
@@ -75,9 +89,18 @@ jobs:
           # dynamically set date as a suffix
           tags: |
             type=ref,event=branch,suffix=-{{date 'YYYYMMDDHHmm'}}
-
-      - name: build
-        run: make build-components
+            type=ref,event=branch
+          labels: |
+            maintainer="Nervos Core Dev <dev@nervos.org>"
+            org.opencontainers.image.authors="Nervos Core Dev <dev@nervos.org>"
+            source.component.Godwoken="https://github.com/nervosnetwork/godwoken"
+            source.component.Godwoken-Scripts="https://github.com/nervosnetwork/godwoken-scripts"
+            source.component.Polyjuice="https://github.com/nervosnetwork/godwoken-polyjuice"
+            source.component.omni_lock="https://github.com/nervosnetwork/ckb-production-scripts"
+            ref.component.Godwoken=${{ steps.build.outputs.GODWOKEN_REF }}
+            ref.component.Godwoken-scripts=${{ steps.build.outputs.GODWOKEN_SCRIPTS_REF }}
+            ref.component.Polyjuice=${{ steps.build.outputs.POLYJUICE_REF }}
+            ref.component.omni_lock=${{ steps.build.outputs.OMNI_LOCK_REF }}
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
@@ -101,13 +124,13 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-      # - name: Check versions of the binaries used by Godwoken
-      #   run: |
-      # FIXME: /lib/x86_64-linux-gnu/libm.so.6: version `GLIBC_2.29' not found (required by godwoken)
-      #     docker run --rm godwoken-prebuilds godwoken --version
-      #     docker run --rm godwoken-prebuilds gw-tools --version
-      ###
-      #     docker run --rm godwoken-prebuilds ckb --version
-      #     docker run --rm godwoken-prebuilds ckb-cli --version
-      #     docker run --rm godwoken-prebuilds ckb-indexer --version
-      #     docker run --rm godwoken-prebuilds find /scripts
+      - name: Check versions of the binaries in ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
+        env:
+          IMAGE: ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
+        run: |
+          docker run --rm ${{ env.IMAGE }} godwoken --version
+          docker run --rm ${{ env.IMAGE }} gw-tools --version
+          docker run --rm ${{ env.IMAGE }} ckb --version
+          docker run --rm ${{ env.IMAGE }} ckb-cli --version
+          docker run --rm ${{ env.IMAGE }} ckb-indexer --version
+          docker run --rm ${{ env.IMAGE }} find /scripts
