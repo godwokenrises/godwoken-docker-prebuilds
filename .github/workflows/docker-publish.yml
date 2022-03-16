@@ -134,3 +134,11 @@ jobs:
           docker run --rm ${{ env.IMAGE }} ckb-cli --version
           docker run --rm ${{ env.IMAGE }} ckb-indexer --version
           docker run --rm ${{ env.IMAGE }} find /scripts -type f -exec sha1sum {} \;
+
+  integration-test:
+    needs: docker-build-push
+    uses: nervosnetwork/godwoken-tests/.github/workflows/reusable-integration-test-v1.yml@develop
+    with:
+      gw_prebuild_image_name: ${{ needs.docker-build-push.outputs.image_name }}
+      gw_prebuild_image_tag: ${{ needs.docker-build-push.outputs.image_tag }}
+      # gw_prebuild_image_digest: ${{ needs.docker-build-push.outputs.image_digest }}
