@@ -27,7 +27,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       
       - uses: actions/cache@v2
         with:
@@ -72,7 +72,7 @@ jobs:
           echo "record the the component's reference to the outputs of this step"
           cat versions
 
-      - name: test
+      - name: Print the references of components
         run: |
           echo ref.component.Godwoken=${{ steps.build.outputs.GODWOKEN_REF }}
           echo ref.component.Godwoken-scripts=${{ steps.build.outputs.GODWOKEN_SCRIPTS_REF }}
@@ -91,8 +91,8 @@ jobs:
             type=ref,event=branch,suffix=-{{date 'YYYYMMDDHHmm'}}
             type=ref,event=branch
           labels: |
-            maintainer="Nervos Core Dev <dev@nervos.org>"
-            org.opencontainers.image.authors="Nervos Core Dev <dev@nervos.org>"
+            maintainer=Nervos Core Dev <dev@nervos.org>
+            org.opencontainers.image.authors=Nervos Core Dev <dev@nervos.org>
             source.component.godwoken=https://github.com/nervosnetwork/godwoken
             source.component.godwoken-scripts-Scripts=https://github.com/nervosnetwork/godwoken-scripts
             source.component.godwoken-polyjuice=https://github.com/nervosnetwork/godwoken-polyjuice
