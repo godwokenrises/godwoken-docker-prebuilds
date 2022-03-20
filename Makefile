@@ -13,14 +13,13 @@ POLYJUICE_REF := v1.0.0-alpha
 OMNI_LOCK_REF := rc_lock
 
 define prepare_repo
-	if [ -d "build/$(3)" ]; then\
-		cd build/$(3);\
-		git fetch origin $(2);\
-		git checkout FETCH_HEAD;\
-		git submodule update --init --recursive --depth=1;\
-	else\
-		git clone --depth=1 --recursive $(1) -b $(2) build/$(3);\
+	if [ ! -d "build/$(3)" ]; then\
+		git clone --depth=1 $(1) build/$(3);\
 	fi
+	cd build/$(3);\
+	git fetch origin $(2);\
+	git checkout FETCH_HEAD;\
+	git submodule update --init --recursive --depth=1;
 endef
 
 prepare-repos:
