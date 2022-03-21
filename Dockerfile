@@ -7,7 +7,7 @@ RUN apt-get -y install --no-install-recommends llvm-dev clang libclang-dev libss
 RUN cargo install moleculec --version 0.7.2
 
 COPY ./build/godwoken /godwoken
-RUN cd /godwoken && rustup component add rustfmt && cargo build --release
+RUN cd /godwoken && rustup component add rustfmt && CARGO_PROFILE_RELEASE_LTO=true cargo build --release
 
 RUN mkdir /ckb
 RUN cd /ckb && curl -LO https://github.com/nervosnetwork/ckb/releases/download/v0.100.0/ckb_v0.100.0_x86_64-unknown-linux-gnu.tar.gz
