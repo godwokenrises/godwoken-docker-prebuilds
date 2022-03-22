@@ -19,6 +19,10 @@ env:
 jobs:
   docker-build-push:
     runs-on: ubuntu-latest
+    # Map the meta step outputs to this job outputs
+    outputs:
+      image_name: ${{ steps.result.outputs.image_name }}
+      image_tag: ${{ steps.result.outputs.image_tag }}
     # If you specify the access for any of these scopes, all of those that are not specified are set to none.
     permissions:
       contents: read
@@ -135,9 +139,15 @@ jobs:
           docker run --rm ${{ env.IMAGE }} ckb-indexer --version
           docker run --rm ${{ env.IMAGE }} find /scripts -type f -exec sha1sum {} \;
 
+      - name: Record image info to the outputs of this jobs
+        id: result
+        run: |
+          echo "::set-output name=image_name::`echo ${{ fromJSON(steps.meta.outputs.json).tags[0] }} | awk -F ':' '{print $1}'`"
+          echo "::set-output name=image_tag::`echo ${{ fromJSON(steps.meta.outputs.json).tags[0] }} | awk -F ':' '{print $NF}'`"
+
   integration-test:
     needs: docker-build-push
-    uses: nervosnetwork/godwoken-tests/.github/workflows/reusable-integration-test-v1.yml@develop
+    uses: nervosnetwork/godwoken-tests/.github/workflows/reusable-integration-test-v1.yml@v1
     with:
       gw_prebuild_image_name: ${{ needs.docker-build-push.outputs.image_name }}
       gw_prebuild_image_tag: ${{ needs.docker-build-push.outputs.image_tag }}
