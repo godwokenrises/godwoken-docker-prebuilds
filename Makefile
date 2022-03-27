@@ -19,7 +19,8 @@ define prepare_repo
 	cd build/$(3);\
 	git fetch origin $(2);\
 	git checkout FETCH_HEAD;\
-	git submodule update --init --recursive --depth=1;
+	git submodule update --init --recursive --depth=1;\
+	echo "::set-output name=$(3)-sha1::$$(git rev-parse HEAD)" >> ../../versions
 endef
 
 prepare-repos:
