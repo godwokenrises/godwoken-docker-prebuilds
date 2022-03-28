@@ -156,9 +156,13 @@ jobs:
             source.component.godwoken-polyjuice=https://github.com/nervosnetwork/godwoken-polyjuice
             source.component.ckb-production-scripts=https://github.com/nervosnetwork/ckb-production-scripts
             ref.component.godwoken=${{ steps.prepare.outputs.GODWOKEN_REF }}
+            ref.component.godwoken-sha1=${{ steps.prepare.outputs.godwoken-sha1 }}
             ref.component.godwoken-scripts=${{ steps.prepare.outputs.GODWOKEN_SCRIPTS_REF }}
+            ref.component.godwoken-scripts-sha1=${{ steps.prepare.outputs.godwoken-scripts-sha1 }}
             ref.component.godwoken-polyjuice=${{ steps.prepare.outputs.POLYJUICE_REF }}
+            ref.component.godwoken-polyjuice-sha1=${{ steps.prepare.outputs.godwoken-polyjuice-sha1 }}
             ref.component.ckb-production-scripts=${{ steps.prepare.outputs.OMNI_LOCK_REF }}
+            ref.component.ckb-production-scripts-sha1=${{ steps.prepare.outputs.ckb-production-scripts-sha1 }}
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
