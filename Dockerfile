@@ -1,5 +1,4 @@
 FROM rust:1 as builder
-MAINTAINER Xuejie Xiao <x@nervos.org>
 
 RUN apt-get update
 RUN apt-get -y install --no-install-recommends llvm-dev clang libclang-dev libssl-dev
@@ -18,11 +17,9 @@ RUN cd /ckb-indexer && curl -LO https://github.com/nervosnetwork/ckb-indexer/rel
 RUN cd /ckb-indexer && unzip ckb-indexer-0.3.2-linux.zip && tar xzf ckb-indexer-linux-x86_64.tar.gz
 
 FROM ubuntu:21.04
-MAINTAINER Xuejie Xiao <x@nervos.org>
 
 RUN mkdir -p /scripts/godwoken-scripts \
- && mkdir -p /scripts/godwoken-polyjuice \
- && mkdir -p /scripts/clerkb
+ && mkdir -p /scripts/godwoken-polyjuice
 
 RUN apt-get update \
  && apt-get dist-upgrade -y \
@@ -45,12 +42,11 @@ COPY build/godwoken-scripts/c/build/*-generator /scripts/godwoken-scripts/
 COPY build/godwoken-scripts/c/build/*-validator /scripts/godwoken-scripts/
 COPY build/godwoken-scripts/c/build/account_locks/* /scripts/godwoken-scripts/
 
-# /scripts/godwoken-polyjuice
-COPY build/godwoken-polyjuice/build/generator* /scripts/godwoken-polyjuice/
-COPY build/godwoken-polyjuice/build/validator* /scripts/godwoken-polyjuice/
+# /scripts/omni-lock
+COPY build/ckb-production-scripts/build/omni_lock /scripts/godwoken-scripts/
 
-# /scripts/clerkb
-COPY build/clerkb/build/debug/poa /scripts/clerkb/
-COPY build/clerkb/build/debug/state /scripts/clerkb/
+# /scripts/godwoken-polyjuice
+COPY build/godwoken-polyjuice/build/*generator* /scripts/godwoken-polyjuice/
+COPY build/godwoken-polyjuice/build/*validator* /scripts/godwoken-polyjuice/
 
 CMD [ "godwoken", "--version" ]

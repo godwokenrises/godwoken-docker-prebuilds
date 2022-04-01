@@ -1,19 +1,17 @@
 name: Docker
 
 on:
-  # TODO: build nightly image
+  # Build v1.0.x image every 12 hours
   # schedule:
-  #   - cron: '22 3 * * *'
+  # - cron: '22 */12 * * *'
   push:
-    branches: [ main, 'docker-publish*' ]
+    branches: [ 'dev', 'v1*' ]
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
-  pull_request:
-    branches: [ main ]
 
 env:
   # Use docker.io for Docker Hub if empty
-  REGISTRY: ${{ github.repository_owner != 'nervosnetwork' && 'ghcr.io/' || '' }}
+  REGISTRY: ${{ github.ref_type != 'tag' && 'ghcr.io/' || '' }}
   # github.repository as <account>/<repo>
   IMAGE_NAME: godwoken-prebuilds
 
@@ -21,22 +19,30 @@ env:
 jobs:
   docker-build-push:
     runs-on: ubuntu-latest
+    # Map the meta step outputs to this job outputs
+    outputs:
+      image_name: ${{ steps.result.outputs.image_name }}
+      image_tag: ${{ steps.result.outputs.image_tag }}
+    # If you specify the access for any of these scopes, all of those that are not specified are set to none.
     permissions:
       contents: read
       packages: write
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            ~/.cargo/bin
-            target
-          key: ${{ runner.os }}-cargo-${{ hashFiles('Cargo.lock') }}
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
 
       - name: Install Rust components
         run: rustup component add rustfmt && rustup component add clippy
@@ -56,14 +62,80 @@ jobs:
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
-      # The GHP_CRT secret is password or personal access token with `write:packages` access scope
+      # GitHub automatically creates a unique GITHUB_TOKEN secret to use in this workflow.
       - name: Log into registry ${{ env.REGISTRY }}
         if: github.event_name != 'pull_request'
         uses: docker/login-action@v1
         with:
           registry: ${{ env.REGISTRY }}
-          username: ${{ secrets.DOCKERHUB_USERNAME || github.actor }}
-          password: ${{ secrets.DOCKERHUB_TOKEN || secrets.GHP_CRT }}
+          username: ${{ github.ref_type != 'tag' && github.repository_owner || secrets.DOCKERHUB_USERNAME }}
+          password: ${{ github.ref_type != 'tag' && secrets.GITHUB_TOKEN || secrets.DOCKERHUB_TOKEN }}
+
+      - name: Prepare components
+        id: prepare
+        run: |
+          make prepare-repos
+          echo "Record the component's reference to the outputs of this step"
+          cat versions
+
+      - name: Print the references of components
+        run: |
+          echo ref.component.godwoken=${{ steps.prepare.outputs.GODWOKEN_REF }}
+          echo ref.component.godwoken-scripts=${{ steps.prepare.outputs.GODWOKEN_SCRIPTS_REF }}
+          echo ref.component.godwoken-polyjuice=${{ steps.prepare.outputs.POLYJUICE_REF }}
+          echo ref.component.ckb-production-scripts=${{ steps.prepare.outputs.OMNI_LOCK_REF }}
+
+      - name: Cache of component.ckb-production-scripts
+        id: ckb-production-scripts-cache
+        uses: actions/cache@v3
+        with:
+          path: build/ckb-production-scripts/build/omni_lock
+          key: component.ckb-production-scripts-${{ steps.prepare.outputs.ckb-production-scripts-sha1 }}
+      - name: Build omni_lock
+        if: steps.ckb-production-scripts-cache.outputs.cache-hit != 'true'
+        working-directory: build/ckb-production-scripts
+        run: make all-via-docker
+
+      - name: Cache of component.godwoken-scripts
+        id: godwoken-scripts-cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            build/godwoken-scripts/build/release/*
+            build/godwoken-scripts/c/build/*-generator
+            build/godwoken-scripts/c/build/*-validator
+            build/godwoken-scripts/c/build/account_locks/*
+          key: component.godwoken-scripts-${{ steps.prepare.outputs.godwoken-scripts-sha1 }}
+      - name: Build godwoken-scripts
+        if: steps.godwoken-scripts-cache.outputs.cache-hit != 'true'
+        working-directory: build/godwoken-scripts
+        run: cd c && make && cd .. && capsule build --release --debug-output
+
+      - name: Cache of component.godwoken-polyjuice
+        id: godwoken-polyjuice-cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            build/godwoken-polyjuice/build/*generator*
+            build/godwoken-polyjuice/build/*validator*
+          key: component.godwoken-polyjuice-${{ steps.prepare.outputs.godwoken-polyjuice-sha1 }}
+      - name: Build godwoken-polyjuice
+        if: steps.godwoken-polyjuice-cache.outputs.cache-hit != 'true'
+        working-directory: build/godwoken-polyjuice
+        run: make all-via-docker
+      
+      - name: Cache of component.godwoken
+        id: godwoken-cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            build/godwoken/target/release/godwoken
+            build/godwoken/target/release/gw-tools
+          key: component.godwoken-${{ steps.prepare.outputs.godwoken-sha1 }}
+      - name: Build godwoken
+        if: steps.godwoken-cache.outputs.cache-hit != 'true'
+        working-directory: build/godwoken
+        run: rustup component add rustfmt && cargo build --release
 
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
@@ -71,18 +143,35 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: ${{ env.REGISTRY }}${{ github.repository_owner == 'nervosnetwork' && 'nervos' || github.repository_owner }}/${{ env.IMAGE_NAME }}
-
-      - name: build
-        run: make build-components
+          images: ${{ env.REGISTRY }}${{ startsWith(github.ref, 'refs/tags') && github.repository_owner == 'nervosnetwork' && 'nervos' || github.repository_owner }}/${{ env.IMAGE_NAME }}
+          # dynamically set date as a suffix
+          tags: |
+            type=ref,event=branch,suffix=-{{date 'YYYYMMDDHHmm'}}
+            type=ref,event=branch
+          labels: |
+            maintainer=Nervos Core Dev <dev@nervos.org>
+            org.opencontainers.image.authors=Nervos Core Dev <dev@nervos.org>
+            source.component.godwoken=https://github.com/nervosnetwork/godwoken
+            source.component.godwoken-scripts-Scripts=https://github.com/nervosnetwork/godwoken-scripts
+            source.component.godwoken-polyjuice=https://github.com/nervosnetwork/godwoken-polyjuice
+            source.component.ckb-production-scripts=https://github.com/nervosnetwork/ckb-production-scripts
+            ref.component.godwoken=${{ steps.prepare.outputs.GODWOKEN_REF }}
+            ref.component.godwoken-sha1=${{ steps.prepare.outputs.godwoken-sha1 }}
+            ref.component.godwoken-scripts=${{ steps.prepare.outputs.GODWOKEN_SCRIPTS_REF }}
+            ref.component.godwoken-scripts-sha1=${{ steps.prepare.outputs.godwoken-scripts-sha1 }}
+            ref.component.godwoken-polyjuice=${{ steps.prepare.outputs.POLYJUICE_REF }}
+            ref.component.godwoken-polyjuice-sha1=${{ steps.prepare.outputs.godwoken-polyjuice-sha1 }}
+            ref.component.ckb-production-scripts=${{ steps.prepare.outputs.OMNI_LOCK_REF }}
+            ref.component.ckb-production-scripts-sha1=${{ steps.prepare.outputs.ckb-production-scripts-sha1 }}
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image to ${{ env.REGISTRY }}${{ github.repository_owner }}/${{ env.IMAGE_NAME }}
-        if: ${{ github.repository_owner != 'nervosnetwork'}}
+        if: ${{ github.ref_type != 'tag' }}
         uses: docker/build-push-action@v2
         with:
           context: .
+          file: Dockerfile.fast
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -94,17 +183,33 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
+          file: Dockerfile.fast
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-      # - name: Check versions of the binaries used by Godwoken
-      #   run: |
-      # FIXME: /lib/x86_64-linux-gnu/libm.so.6: version `GLIBC_2.29' not found (required by godwoken)
-      #     docker run --rm godwoken-prebuilds godwoken --version
-      #     docker run --rm godwoken-prebuilds gw-tools --version
-      ###
-      #     docker run --rm godwoken-prebuilds ckb --version
-      #     docker run --rm godwoken-prebuilds ckb-cli --version
-      #     docker run --rm godwoken-prebuilds ckb-indexer --version
-      #     docker run --rm godwoken-prebuilds find /scripts
+      - name: Check versions of the binaries in ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
+        if: ${{ github.event_name != 'pull_request' }}
+        env:
+          IMAGE: ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
+        run: |
+          docker run --rm ${{ env.IMAGE }} godwoken --version
+          docker run --rm ${{ env.IMAGE }} gw-tools --version
+          docker run --rm ${{ env.IMAGE }} ckb --version
+          docker run --rm ${{ env.IMAGE }} ckb-cli --version
+          docker run --rm ${{ env.IMAGE }} ckb-indexer --version
+          docker run --rm ${{ env.IMAGE }} find /scripts -type f -exec sha1sum {} \;
+
+      - name: Record image info to the outputs of this jobs
+        id: result
+        run: |
+          echo "::set-output name=image_name::`echo ${{ fromJSON(steps.meta.outputs.json).tags[0] }} | awk -F ':' '{print $1}'`"
+          echo "::set-output name=image_tag::`echo ${{ fromJSON(steps.meta.outputs.json).tags[0] }} | awk -F ':' '{print $NF}'`"
+
+  integration-test:
+    needs: docker-build-push
+    uses: nervosnetwork/godwoken-tests/.github/workflows/reusable-integration-test-v1.yml@v1
+    with:
+      gw_prebuild_image_name: ${{ needs.docker-build-push.outputs.image_name }}
+      gw_prebuild_image_tag: ${{ needs.docker-build-push.outputs.image_tag }}
+      # gw_prebuild_image_digest: ${{ needs.docker-build-push.outputs.image_digest }}

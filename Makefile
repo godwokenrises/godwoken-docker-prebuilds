@@ -4,37 +4,40 @@ SHELL := /bin/bash
 GODWOKEN_REPO := https://github.com/nervosnetwork/godwoken.git
 GODWOKEN_SCRIPTS_REPO := https://github.com/nervosnetwork/godwoken-scripts.git
 POLYJUICE_REPO := https://github.com/nervosnetwork/godwoken-polyjuice.git
-CLERKB_REPO := https://github.com/nervosnetwork/clerkb.git
+OMNI_LOCK_REPO := https://github.com/nervosnetwork/ckb-production-scripts.git
 
 # components tags
-GODWOKEN_REF := v0.10.3
-GODWOKEN_SCRIPTS_REF := v0.8.4
-POLYJUICE_REF := v0.8.10-aot
-CLERKB_REF := v0.4.0
+GODWOKEN_REF := v1.0.0-rc1
+GODWOKEN_SCRIPTS_REF := v1.0.0-rc1
+POLYJUICE_REF := v1.0.0-rc1
+OMNI_LOCK_REF := rc_lock
 
 define prepare_repo
-	if [ -d "build/$(3)" ]; then\
-		cd build/$(3);\
-		git reset --hard;\
-		git fetch --all;\
-		git checkout $(2);\
-		git submodule update --init --recursive;\
-	else\
-		git clone --recursive $(1) -b $(2) build/$(3);\
+	if [ ! -d "build/$(3)" ]; then\
+		git clone --depth=1 $(1) build/$(3);\
 	fi
+	cd build/$(3);\
+	git fetch origin $(2);\
+	git checkout FETCH_HEAD;\
+	git submodule update --init --recursive --depth=1;\
+	echo "::set-output name=$(3)-sha1::$$(git rev-parse HEAD)" >> ../../versions
 endef
 
 prepare-repos:
 	mkdir -p build
 	$(call prepare_repo,$(GODWOKEN_REPO),$(GODWOKEN_REF),godwoken)
+	echo "::set-output name=GODWOKEN_REF::$(GODWOKEN_REF) $$(cd build/godwoken && git rev-parse --short HEAD)" >> versions
 	$(call prepare_repo,$(GODWOKEN_SCRIPTS_REPO),$(GODWOKEN_SCRIPTS_REF),godwoken-scripts)
+	echo "::set-output name=GODWOKEN_SCRIPTS_REF::$(GODWOKEN_SCRIPTS_REF) $$(cd build/godwoken-scripts && git rev-parse --short HEAD)" >> versions
 	$(call prepare_repo,$(POLYJUICE_REPO),$(POLYJUICE_REF),godwoken-polyjuice)
-	$(call prepare_repo,$(CLERKB_REPO),$(CLERKB_REF),clerkb)
+	echo "::set-output name=POLYJUICE_REF::$(POLYJUICE_REF) $$(cd build/godwoken-polyjuice && git rev-parse --short HEAD)" >> versions
+	$(call prepare_repo,$(OMNI_LOCK_REPO),$(OMNI_LOCK_REF),ckb-production-scripts)
+	echo "::set-output name=OMNI_LOCK_REF::$(OMNI_LOCK_REF) $$(cd build/ckb-production-scripts && git rev-parse --short HEAD)" >> versions
 
 build-components: prepare-repos
 	cd build/godwoken-polyjuice && make dist && cd -
 	cd build/godwoken-scripts && cd c && make && cd .. && capsule build --release --debug-output && cd ../..
-	cd build/clerkb && yarn && make all-via-docker && cd ../..
+	cd build/ckb-production-scripts && make all-via-docker
 
 build-push:
 	make build-components
@@ -57,19 +60,14 @@ test:
 test-files:
 	echo "start checking build result..."
 # compare scripts files
-	make test-clerkb-files
 	make test-scripts-files
 	make test-polyjuice-files
 # compare bin files
 	cd `pwd`/test-result/bin && ./godwoken --version && ./gw-tools --version
 	[ -e "test-result" ] && rm -rf test-result
 
-test-clerkb-files:
-	source tool.sh && check_clerkb_files_exists
-
 test-scripts-files:
 	source tool.sh && check_scripts_files_exists
 
 test-polyjuice-files:
 	source tool.sh && check_polyjuice_files_exists 
-
