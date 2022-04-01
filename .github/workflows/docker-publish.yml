@@ -146,6 +146,7 @@ jobs:
           images: ${{ env.REGISTRY }}${{ startsWith(github.ref, 'refs/tags') && github.repository_owner == 'nervosnetwork' && 'nervos' || github.repository_owner }}/${{ env.IMAGE_NAME }}
           # dynamically set date as a suffix
           tags: |
+            type=ref,event=tag
             type=ref,event=branch,suffix=-{{date 'YYYYMMDDHHmm'}}
             type=ref,event=branch
           labels: |
