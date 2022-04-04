@@ -8,8 +8,8 @@ OMNI_LOCK_REPO := https://github.com/nervosnetwork/ckb-production-scripts.git
 
 # components tags
 GODWOKEN_REF := develop
-GODWOKEN_SCRIPTS_REF := compatibility-breaking-changes
-POLYJUICE_REF := compatibility-breaking-changes
+GODWOKEN_SCRIPTS_REF := refs/pull/115/head
+POLYJUICE_REF := refs/pull/140/head
 OMNI_LOCK_REF := rc_lock
 
 define prepare_repo
