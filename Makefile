@@ -8,7 +8,7 @@ OMNI_LOCK_REPO := https://github.com/nervosnetwork/ckb-production-scripts.git
 
 # components tags
 GODWOKEN_REF := develop
-GODWOKEN_SCRIPTS_REF := refs/pull/115/head
+GODWOKEN_SCRIPTS_REF := master
 POLYJUICE_REF := refs/pull/140/head
 OMNI_LOCK_REF := rc_lock
 
