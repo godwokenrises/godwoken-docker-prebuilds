@@ -9,7 +9,7 @@ CLERKB_REPO := https://github.com/nervosnetwork/clerkb.git
 # components tags
 GODWOKEN_REF := v0.10.4
 GODWOKEN_SCRIPTS_REF := v0.8.4
-POLYJUICE_REF := refs/pull/142/head
+POLYJUICE_REF := v0.8.11
 CLERKB_REF := v0.4.0
 
 define prepare_repo
@@ -32,6 +32,7 @@ prepare-repos:
 	$(call prepare_repo,$(POLYJUICE_REPO),$(POLYJUICE_REF),godwoken-polyjuice)
 	echo "::set-output name=POLYJUICE_REF::$(POLYJUICE_REF) $$(cd build/godwoken-polyjuice && git rev-parse --short HEAD)" >> versions
 	$(call prepare_repo,$(CLERKB_REPO),$(CLERKB_REF),clerkb)
+	echo "::set-output name=CLERKB_REF::$(CLERKB_REF) $$(cd build/clerkb && git rev-parse --short HEAD)" >> versions
 
 build-components: prepare-repos
 	cd build/godwoken-polyjuice && make dist && cd -
@@ -74,4 +75,3 @@ test-scripts-files:
 
 test-polyjuice-files:
 	source tool.sh && check_polyjuice_files_exists 
-
