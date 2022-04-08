@@ -77,5 +77,3 @@ $ docker run --rm godwoken-prebuilds find /scripts
 /scripts/clerkb/state
 /scripts/clerkb/poa
 ```
-
-Finally, the original [Web3 compatible RPC layer](https://github.com/nervosnetwork/godwoken-web3) is move to [this js-prebuild image](https://github.com/RetricSu/godwoken-docker-js-prebuilds). 
