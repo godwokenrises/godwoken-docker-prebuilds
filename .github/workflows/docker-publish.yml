@@ -164,7 +164,6 @@ jobs:
             ref.component.godwoken-scripts-sha1=${{ steps.prepare.outputs.godwoken-scripts-sha1 }}
             ref.component.godwoken-polyjuice=${{ steps.prepare.outputs.POLYJUICE_REF }}
             ref.component.godwoken-polyjuice-sha1=${{ steps.prepare.outputs.godwoken-polyjuice-sha1 }}
-
             ref.component.clerkb=${{ steps.prepare.outputs.OMNI_LOCK_REF }}
             ref.component.clerkb-sha1=${{ steps.prepare.outputs.clerkb-sha1 }}
 
