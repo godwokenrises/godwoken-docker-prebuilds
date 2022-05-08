@@ -1,15 +1,12 @@
 godwoken-docker-prebuilds
 =========================
 
-Docker image containing all binaries used by godwoken, saving you the hassles of building them yourself.
+Docker image containing all binaries used by Godwoken, saving you the hassles of building them yourself.
 
 How to build:
 
 ```bash
 $ make build-components
-
-
-
 $ docker build . -t godwoken-prebuilds
 ```
 
@@ -22,9 +19,9 @@ $ # build and push to docker-hub, will ask you to enter image tag
 $ make build-push
 ```
 
-# Usage
+## Usage
 
-`godwoken` binary resides in `/bin/godwoken`, this is already in PATH so you can do this:
+`Godwoken` binary resides in `/bin/godwoken`, this is already in PATH so you can do this:
 
 ```bash
 $ docker run --rm godwoken-prebuilds godwoken --version
@@ -44,7 +41,14 @@ $ docker run --rm godwoken-prebuilds ckb-cli --version
 $ docker run --rm godwoken-prebuilds ckb-indexer --version
 ```
 
-All the scripts used by godwoken can be found at `/scripts` folder:
+## Check the reference of every component
+```bash
+docker inspect godwoken-prebuilds:[TAG] | egrep ref.component
+```
+
+## Scripts
+
+All the scripts used by Godwoken can be found at `/scripts` folder:
 
 ```bash
 $ docker run --rm godwoken-prebuilds find /scripts -type f -exec sha1sum {} \;
