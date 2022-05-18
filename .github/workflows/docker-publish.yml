@@ -5,9 +5,9 @@ on:
   # schedule:
   #   - cron: '22 3 * * *'
   push:
-    branches: [ main, 'v0.10*' ]
+    branches: [ main, 'v0.10*', '0.10*' ]
     # Publish semver tags as releases.
-    tags: [ 'v*.*.*' ]
+    tags: [ 'v*.*.*', '0.10.*', '1.*' ]
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -172,7 +172,6 @@ jobs:
             ref.component.godwoken-scripts-sha1=${{ steps.prepare.outputs.godwoken-scripts-sha1 }}
             ref.component.godwoken-polyjuice=${{ steps.prepare.outputs.POLYJUICE_REF }}
             ref.component.godwoken-polyjuice-sha1=${{ steps.prepare.outputs.godwoken-polyjuice-sha1 }}
-
             ref.component.clerkb=${{ steps.prepare.outputs.OMNI_LOCK_REF }}
             ref.component.clerkb-sha1=${{ steps.prepare.outputs.clerkb-sha1 }}
 
