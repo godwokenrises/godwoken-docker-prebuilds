@@ -9,7 +9,7 @@ CLERKB_REPO := https://github.com/nervosnetwork/clerkb.git
 # components tags
 GODWOKEN_REF := v0.10.4
 GODWOKEN_SCRIPTS_REF := v0.8.4
-POLYJUICE_REF := v0.8.12
+POLYJUICE_REF := v0.8.14
 CLERKB_REF := v0.4.0
 
 define prepare_repo
