@@ -42,5 +42,6 @@ COPY build/godwoken-polyjuice/build/*validator* /scripts/godwoken-polyjuice/
 # godwoken
 COPY build/godwoken/target/release/godwoken /bin/godwoken
 COPY build/godwoken/target/release/gw-tools /bin/gw-tools
+COPY gw-healthcheck.sh /bin/gw-healthcheck.sh
 
 CMD [ "godwoken", "--version" ]
