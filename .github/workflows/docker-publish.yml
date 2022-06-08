@@ -217,9 +217,7 @@ jobs:
 
   integration-test:
     needs: docker-build-push
-    uses: nervosnetwork/godwoken-tests/.github/workflows/reusable-integration-test-v1.yml@develop
+    uses: nervosnetwork/godwoken-tests/.github/workflows/reusable-integration-test-v1.yml@simplify-workflow
     with:
-      gw_prebuild_image_name: ${{ needs.docker-build-push.outputs.image_name }}
-      gw_prebuild_image_tag: ${{ needs.docker-build-push.outputs.image_tag }}
-      kicker_ref: compatibility-changes # https://github.com/RetricSu/godwoken-kicker/tree/compatibility-changes
-      # gw_prebuild_image_digest: ${{ needs.docker-build-push.outputs.image_digest }}
+      extra_github_env: |
+        GODWOKEN_PREBUILD_IMAGE_NAME="${{ needs.docker-build-push.outputs.image_name }}:${{ needs.docker-build-push.outputs.image_tag }}"
