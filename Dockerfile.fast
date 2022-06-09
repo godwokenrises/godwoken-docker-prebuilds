@@ -1,3 +1,11 @@
+# Some hardfork versions
+
+# Godwoken testnet_v1 blocks[0..110000] uses polyjuice_v1.1.5-beta
+# - https://github.com/nervosnetwork/godwoken-docker-prebuilds/pkgs/container/godwoken-prebuilds/23550942?tag=v1.1.4-rc1-202205301007
+# - https://github.com/nervosnetwork/godwoken-polyjuice/releases/tag/v1.1.5-beta
+FROM ghcr.io/nervosnetwork/godwoken-prebuilds:v1.1.4-rc1-202205301007 as polyjuice_v1.1.5-beta
+
+################################################################################
 FROM ubuntu:21.04
 
 RUN mkdir -p /scripts/godwoken-scripts \
@@ -26,6 +34,7 @@ RUN cd /ckb-indexer \
  && cp /ckb-indexer/ckb-indexer /bin/ckb-indexer \
  && rm -rf /ckb-indexer
 
+#################################### latest ####################################
 # /scripts/omni-lock
 COPY build/ckb-production-scripts/build/omni_lock /scripts/godwoken-scripts/
 
@@ -38,6 +47,14 @@ COPY build/godwoken-scripts/c/build/account_locks/* /scripts/godwoken-scripts/
 # /scripts/godwoken-polyjuice
 COPY build/godwoken-polyjuice/build/*generator* /scripts/godwoken-polyjuice/
 COPY build/godwoken-polyjuice/build/*validator* /scripts/godwoken-polyjuice/
+################################################################################
+
+############################ polyjuice_v1.1.5-beta #############################
+RUN mkdir -p /scripts/godwoken-polyjuice-v1.1.5-beta
+
+COPY --from=polyjuice_v1.1.5-beta /scripts/godwoken-polyjuice/* \
+                                  /scripts/godwoken-polyjuice-v1.1.5-beta/
+################################################################################
 
 # godwoken
 COPY build/godwoken/target/release/godwoken /bin/godwoken
