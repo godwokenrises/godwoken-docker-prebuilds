@@ -5,9 +5,9 @@ on:
   # schedule:
   #   - cron: '22 3 * * *'
   push:
-    branches: [ main, 'v0.10*' ]
+    branches: [ main, 'v0.10*', '0.10*' ]
     # Publish semver tags as releases.
-    tags: [ 'v*.*.*' ]
+    tags: [ 'v*.*.*', '0.10.*', '1.*' ]
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -39,7 +39,6 @@ jobs:
             ~/.cargo/registry/index/
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
-            target/
           key: ${{ runner.os }}-cargo-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-cargo-
@@ -49,7 +48,7 @@ jobs:
       - name: Install moleculec
         run: |
           test "$(moleculec --version)" = "Moleculec 0.7.2" \
-          || CARGO_TARGET_DIR=target/ cargo install moleculec --version 0.7.2 --force
+          || cargo install moleculec --version 0.7.2 --force
       - name: Install capsule
         env:
           CAPSULE_VERSION: v0.7.0
@@ -134,6 +133,15 @@ jobs:
             build/godwoken/target/release/godwoken
             build/godwoken/target/release/gw-tools
           key: component.godwoken-${{ steps.prepare.outputs.godwoken-sha1 }}
+      - name: Cache Godwoken target directory
+        if: steps.godwoken-cache.outputs.cache-hit != 'true'
+        uses: actions/cache@v3
+        with:
+          path: |
+            build/godwoken/target
+          key: ${{ runner.os }}-cargo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
       - name: Build godwoken
         if: steps.godwoken-cache.outputs.cache-hit != 'true'
         working-directory: build/godwoken
@@ -164,7 +172,6 @@ jobs:
             ref.component.godwoken-scripts-sha1=${{ steps.prepare.outputs.godwoken-scripts-sha1 }}
             ref.component.godwoken-polyjuice=${{ steps.prepare.outputs.POLYJUICE_REF }}
             ref.component.godwoken-polyjuice-sha1=${{ steps.prepare.outputs.godwoken-polyjuice-sha1 }}
-
             ref.component.clerkb=${{ steps.prepare.outputs.OMNI_LOCK_REF }}
             ref.component.clerkb-sha1=${{ steps.prepare.outputs.clerkb-sha1 }}
 
