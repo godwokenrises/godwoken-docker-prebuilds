@@ -5,9 +5,9 @@ on:
   # schedule:
   # - cron: '22 */12 * * *'
   push:
-    branches: [ 'main', 'dev', 'v1*' ]
+    branches: [ 'main', 'dev', 'v1*', '1.*' ]
     # Publish semver tags as releases.
-    tags: [ 'v*.*.*' ]
+    tags: [ 'v*.*.*', '1.*' ]
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -217,7 +217,7 @@ jobs:
 
   integration-test:
     needs: docker-build-push
-    uses: nervosnetwork/godwoken-tests/.github/workflows/reusable-integration-test-v1.yml@simplify-workflow
+    uses: nervosnetwork/godwoken-tests/.github/workflows/reusable-integration-test-v1.yml@develop
     with:
       extra_github_env: |
         GODWOKEN_PREBUILD_IMAGE_NAME="${{ needs.docker-build-push.outputs.image_name }}:${{ needs.docker-build-push.outputs.image_tag }}"
