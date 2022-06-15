@@ -19,7 +19,7 @@ RUN mkdir -p /scripts/godwoken-scripts \
 
 RUN apt-get update \
  && apt-get dist-upgrade -y \
- && apt-get install -y curl unzip \
+ && apt-get install -y curl unzip jq \
  && apt-get clean \
  && echo 'Finished installing OS updates'
 
