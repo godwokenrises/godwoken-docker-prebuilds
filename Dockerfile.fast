@@ -9,6 +9,9 @@ FROM ghcr.io/nervosnetwork/godwoken-prebuilds:v1.1.4-rc1 as polyjuice-v1.1.5-bet
 # > "ref.component.godwoken-polyjuice": "1.2.0  b1e0622"
 FROM ghcr.io/nervosnetwork/godwoken-prebuilds:1.2.0-rc1 as polyjuice-v1.2.0
 
+# https://github.com/nervosnetwork/godwoken-docker-prebuilds/pkgs/container/godwoken-prebuilds/27292928?tag=1.3.0-rc1
+# > "ref.component.godwoken-polyjuice": "1.3.0  4d068a0"
+FROM ghcr.io/nervosnetwork/godwoken-prebuilds:1.3.0-rc1 as polyjuice-v1.3.0
 ################################################################################
 FROM ubuntu:21.04
 
@@ -38,6 +41,33 @@ RUN cd /ckb-indexer \
  && cp /ckb-indexer/ckb-indexer /bin/ckb-indexer \
  && rm -rf /ckb-indexer
 
+############################ polyjuice-v1.1.5-beta #############################
+# https://github.com/nervosnetwork/godwoken-polyjuice/releases/tag/v1.1.5-beta
+RUN mkdir -p /scripts/godwoken-polyjuice-v1.1.5-beta
+
+COPY --from=polyjuice-v1.1.5-beta /scripts/godwoken-polyjuice/* \
+                                  /scripts/godwoken-polyjuice-v1.1.5-beta/
+################################################################################
+
+
+############################## polyjuice-v1.2.0 ################################
+# https://github.com/nervosnetwork/godwoken-polyjuice/releases/tag/1.2.0
+RUN mkdir -p /scripts/godwoken-polyjuice-v1.2.0
+
+COPY --from=polyjuice-v1.2.0 /scripts/godwoken-polyjuice/* \
+                             /scripts/godwoken-polyjuice-v1.2.0/
+################################################################################
+
+
+############################## polyjuice-v1.3.0 ################################
+# https://github.com/nervosnetwork/godwoken-polyjuice/releases/tag/1.3.0
+RUN mkdir -p /scripts/godwoken-polyjuice-v1.3.0
+
+COPY --from=polyjuice-v1.3.0 /scripts/godwoken-polyjuice/* \
+                             /scripts/godwoken-polyjuice-v1.3.0/
+################################################################################
+
+
 #################################### latest ####################################
 # /scripts/omni-lock
 COPY build/ckb-production-scripts/build/omni_lock /scripts/godwoken-scripts/
@@ -53,21 +83,6 @@ COPY build/godwoken-polyjuice/build/*generator* /scripts/godwoken-polyjuice/
 COPY build/godwoken-polyjuice/build/*validator* /scripts/godwoken-polyjuice/
 ################################################################################
 
-############################## polyjuice-v1.2.0 ################################
-# https://github.com/nervosnetwork/godwoken-polyjuice/releases/tag/1.2.0
-RUN mkdir -p /scripts/godwoken-polyjuice-v1.2.0
-
-COPY --from=polyjuice-v1.2.0 /scripts/godwoken-polyjuice/* \
-                             /scripts/godwoken-polyjuice-v1.2.0/
-################################################################################
-
-############################ polyjuice-v1.1.5-beta #############################
-# https://github.com/nervosnetwork/godwoken-polyjuice/releases/tag/v1.1.5-beta
-RUN mkdir -p /scripts/godwoken-polyjuice-v1.1.5-beta
-
-COPY --from=polyjuice-v1.1.5-beta /scripts/godwoken-polyjuice/* \
-                                  /scripts/godwoken-polyjuice-v1.1.5-beta/
-################################################################################
 
 # godwoken
 COPY build/godwoken/target/release/godwoken /bin/godwoken
