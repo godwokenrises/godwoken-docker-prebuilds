@@ -6,7 +6,8 @@ RUN apt-get -y install --no-install-recommends llvm-dev clang libclang-dev libss
 RUN cargo install moleculec --version 0.7.2
 
 COPY ./build/godwoken /godwoken
-RUN cd /godwoken && rustup component add rustfmt && cargo build --release
+# PORTABLE=1 USE_SSE=1 tell rocksdb to target AVX2: https://github.com/nervosnetwork/rust-rocksdb/blob/2de3ae5e5e23a315a477bd24e700eb4f5ef7a378/librocksdb-sys/build_detect_platform#L696-L699
+RUN cd /godwoken && rustup component add rustfmt && PORTABLE=1 USE_SSE=1 RUSTFLAGS="-C target-cpu=skylake" CARGO_PROFILE_RELEASE_LTO=true cargo build --release
 
 RUN mkdir /ckb
 RUN cd /ckb && curl -LO https://github.com/nervosnetwork/ckb/releases/download/v0.100.0/ckb_v0.100.0_x86_64-unknown-linux-gnu.tar.gz
