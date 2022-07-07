@@ -31,7 +31,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      
+
       - uses: actions/cache@v3
         with:
           path: |
@@ -122,7 +122,7 @@ jobs:
         if: steps.godwoken-polyjuice-cache.outputs.cache-hit != 'true'
         working-directory: build/godwoken-polyjuice
         run: make all-via-docker
-      
+
       - name: Cache of component.godwoken
         id: godwoken-cache
         uses: actions/cache@v3
@@ -143,7 +143,8 @@ jobs:
       - name: Build godwoken
         if: steps.godwoken-cache.outputs.cache-hit != 'true'
         working-directory: build/godwoken
-        run: rustup component add rustfmt && cargo build --release
+        # # PORTABLE=1 USE_SSE=1 tell rocksdb to target AVX2: https://github.com/nervosnetwork/rust-rocksdb/blob/2de3ae5e5e23a315a477bd24e700eb4f5ef7a378/librocksdb-sys/build_detect_platform#L696-L699
+        run: rustup component add rustfmt && PORTABLE=1 USE_SSE=1 RUSTFLAGS="-C target-cpu=skylake" CARGO_PROFILE_RELEASE_LTO=true cargo build --release
 
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
