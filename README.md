@@ -41,6 +41,12 @@ $ docker run --rm godwoken-prebuilds ckb-cli --version
 $ docker run --rm godwoken-prebuilds ckb-indexer --version
 ```
 
+## CPU Feature Requirement
+
+Starting from version 1.3.0-rc3, the published images require [AVX2](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions). Most recent x86-64 CPUs support AVX2. On linux, you can check for AVX2 support by inspecting `/proc/cpuinfo` or running `lscpu`.
+
+If your CPU/environment does not support AVX2, you can build an image that does not require AVX2 by running the build steps above on the specific CPU/environment.
+
 ## Check the reference of every component
 ```bash
 docker inspect godwoken-prebuilds:[TAG] | egrep ref.component
