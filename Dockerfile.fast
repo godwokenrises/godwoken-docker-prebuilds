@@ -13,7 +13,7 @@ FROM ghcr.io/nervosnetwork/godwoken-prebuilds:1.2.0-rc1 as polyjuice-v1.2.0
 # > "ref.component.godwoken-polyjuice": "1.3.0  4d068a0"
 FROM ghcr.io/nervosnetwork/godwoken-prebuilds:1.3.0-rc1 as polyjuice-v1.3.0
 ################################################################################
-FROM ubuntu:21.04
+FROM ubuntu:bionic
 
 RUN mkdir -p /scripts/godwoken-scripts \
  && mkdir -p /scripts/godwoken-polyjuice \
@@ -22,7 +22,7 @@ RUN mkdir -p /scripts/godwoken-scripts \
 
 RUN apt-get update \
  && apt-get dist-upgrade -y \
- && apt-get install -y curl unzip jq \
+ && apt-get install -y curl jq \
  && apt-get clean \
  && echo 'Finished installing OS updates'
 
