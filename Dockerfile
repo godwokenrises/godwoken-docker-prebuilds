@@ -17,7 +17,7 @@ RUN mkdir /ckb-indexer
 RUN cd /ckb-indexer && curl -LO https://github.com/nervosnetwork/ckb-indexer/releases/download/v0.3.2/ckb-indexer-0.3.2-linux.zip
 RUN cd /ckb-indexer && unzip ckb-indexer-0.3.2-linux.zip && tar xzf ckb-indexer-linux-x86_64.tar.gz
 
-FROM ubuntu:21.04
+FROM ubuntu:focal
 
 RUN mkdir -p /scripts/godwoken-scripts \
  && mkdir -p /scripts/godwoken-polyjuice
