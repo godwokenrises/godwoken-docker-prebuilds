@@ -1,14 +1,4 @@
-# Some historical versions
-
-# Godwoken testnet_v1 blocks[0..110000] uses polyjuice-v1.1.5-beta
-# https://github.com/nervosnetwork/godwoken-docker-prebuilds/pkgs/container/godwoken-prebuilds/23550942?tag=v1.1.4-rc1
-# > "ref.component.godwoken-polyjuice": "v1.1.5-beta  2607851"
-FROM ghcr.io/nervosnetwork/godwoken-prebuilds:v1.1.4-rc1 as polyjuice-v1.1.5-beta
-
-# https://github.com/nervosnetwork/godwoken-docker-prebuilds/pkgs/container/godwoken-prebuilds/24701212?tag=1.2.0-rc1
-# > "ref.component.godwoken-polyjuice": "1.2.0  b1e0622"
-FROM ghcr.io/nervosnetwork/godwoken-prebuilds:1.2.0-rc1 as polyjuice-v1.2.0
-
+# Historical versions
 # https://github.com/nervosnetwork/godwoken-docker-prebuilds/pkgs/container/godwoken-prebuilds/27292928?tag=1.3.0-rc1
 # > "ref.component.godwoken-polyjuice": "1.3.0  4d068a0"
 FROM ghcr.io/nervosnetwork/godwoken-prebuilds:1.3.0-rc1 as polyjuice-v1.3.0
@@ -38,30 +28,25 @@ RUN cd /ckb \
  && rm -rf /ckb
 
 ############################ polyjuice-v1.1.5-beta #############################
+# Godwoken testnet_v1 blocks[0..110000) use polyjuice-v1.1.5-beta
 # https://github.com/nervosnetwork/godwoken-polyjuice/releases/tag/v1.1.5-beta
-RUN mkdir -p /scripts/godwoken-polyjuice-v1.1.5-beta
-
-COPY --from=polyjuice-v1.1.5-beta /scripts/godwoken-polyjuice/* \
-                                  /scripts/godwoken-polyjuice-v1.1.5-beta/
-################################################################################
+COPY --from=polyjuice-v1.3.0 /scripts/godwoken-polyjuice-v1.1.5-beta \
+                             /scripts/godwoken-polyjuice-v1.1.5-beta
 
 
 ############################## polyjuice-v1.2.0 ################################
+# Godwoken testnet_v1 blocks[110000..180000) use godwoken-polyjuice-v1.2.0
 # https://github.com/nervosnetwork/godwoken-polyjuice/releases/tag/1.2.0
-RUN mkdir -p /scripts/godwoken-polyjuice-v1.2.0
-
-COPY --from=polyjuice-v1.2.0 /scripts/godwoken-polyjuice/* \
-                             /scripts/godwoken-polyjuice-v1.2.0/
-################################################################################
+COPY --from=polyjuice-v1.3.0 /scripts/godwoken-polyjuice-v1.2.0 \
+                             /scripts/godwoken-polyjuice-v1.2.0
 
 
 ############################## polyjuice-v1.3.0 ################################
+# Godwoken testnet_v1 blocks[180000..] use godwoken-polyjuice-v1.3.0
 # https://github.com/nervosnetwork/godwoken-polyjuice/releases/tag/1.3.0
 RUN mkdir -p /scripts/godwoken-polyjuice-v1.3.0
-
 COPY --from=polyjuice-v1.3.0 /scripts/godwoken-polyjuice/* \
                              /scripts/godwoken-polyjuice-v1.3.0/
-################################################################################
 
 
 #################################### latest ####################################
