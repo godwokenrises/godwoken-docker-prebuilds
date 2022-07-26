@@ -143,8 +143,8 @@ jobs:
       - name: Build godwoken
         if: steps.godwoken-cache.outputs.cache-hit != 'true'
         working-directory: build/godwoken
-        # # PORTABLE=1 USE_SSE=1 tell rocksdb to target AVX2: https://github.com/nervosnetwork/rust-rocksdb/blob/2de3ae5e5e23a315a477bd24e700eb4f5ef7a378/librocksdb-sys/build_detect_platform#L696-L699
-        run: rustup component add rustfmt && PORTABLE=1 USE_SSE=1 RUSTFLAGS="-C target-cpu=skylake" CARGO_PROFILE_RELEASE_LTO=true cargo build --release
+        # RocksDB uses -march=native. Let's use it too.
+        run: rustup component add rustfmt && RUSTFLAGS="-C target-cpu=native" CARGO_PROFILE_RELEASE_LTO=true cargo build --release
 
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action

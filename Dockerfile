@@ -12,8 +12,12 @@ FROM ghcr.io/nervosnetwork/godwoken-prebuilds:1.2.0-rc1 as polyjuice-v1.2.0
 # https://github.com/nervosnetwork/godwoken-docker-prebuilds/pkgs/container/godwoken-prebuilds/27292928?tag=1.3.0-rc1
 # > "ref.component.godwoken-polyjuice": "1.3.0  4d068a0"
 FROM ghcr.io/nervosnetwork/godwoken-prebuilds:1.3.0-rc1 as polyjuice-v1.3.0
+
 ################################################################################
+
 FROM ubuntu:focal
+LABEL description="Docker image containing all binaries used by Godwoken, saving you the hassles of building them yourself."
+LABEL maintainer="Nervos Core Dev <dev@nervos.org>"
 
 RUN mkdir -p /scripts/godwoken-scripts \
  && mkdir -p /scripts/godwoken-polyjuice \
