@@ -38,6 +38,7 @@ build-components: prepare-repos
 	cd build/godwoken-polyjuice && make dist && cd -
 	cd build/godwoken-scripts && cd c && make && cd .. && capsule build --release --debug-output && cd ../..
 	cd build/ckb-production-scripts && make all-via-docker
+	cd build/godwoken && rustup component add rustfmt && RUSTFLAGS="-C target-cpu=native" CARGO_PROFILE_RELEASE_LTO=true cargo build --release 
 
 build-push:
 	make build-components
@@ -49,8 +50,8 @@ test:
 	make build-components
 	docker build . -t nervos/godwoken-prebuilds:latest-test
 	mkdir -p `pwd`/test-result/scripts
-	mkdir -p `pwd`/test-result/bin 
-	docker run -it -d --name dummy nervos/godwoken-prebuilds:latest-test 
+	mkdir -p `pwd`/test-result/bin
+	docker run -it -d --name dummy nervos/godwoken-prebuilds:latest-test
 	docker cp dummy:/scripts/. `pwd`/test-result/scripts
 	docker cp dummy:/bin/godwoken `pwd`/test-result/bin
 	docker cp dummy:/bin/gw-tools `pwd`/test-result/bin
