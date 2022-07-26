@@ -33,12 +33,11 @@ $ docker run --rm godwoken-prebuilds godwoken --version
 $ docker run --rm godwoken-prebuilds gw-tools --version
 ```
 
-CKB, ckb-cli, and ckb-indexer are also available this way:
+CKB and ckb-cli are also available this way:
 
 ```bash
 $ docker run --rm godwoken-prebuilds ckb --version
 $ docker run --rm godwoken-prebuilds ckb-cli --version
-$ docker run --rm godwoken-prebuilds ckb-indexer --version
 ```
 
 ## CPU Feature Requirement
