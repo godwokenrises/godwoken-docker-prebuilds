@@ -17,8 +17,7 @@ FROM ubuntu:bionic
 
 RUN mkdir -p /scripts/godwoken-scripts \
  && mkdir -p /scripts/godwoken-polyjuice \
- && mkdir /ckb \
- && mkdir /ckb-indexer
+ && mkdir /ckb 
 
 RUN apt-get update \
  && apt-get dist-upgrade -y \
@@ -28,18 +27,11 @@ RUN apt-get update \
 
 # ckb
 RUN cd /ckb \
- && curl -LO https://github.com/nervosnetwork/ckb/releases/download/v0.103.0/ckb_v0.103.0_x86_64-unknown-linux-gnu.tar.gz \
- && tar xzf ckb_v0.103.0_x86_64-unknown-linux-gnu.tar.gz \
- && cp ckb_v0.103.0_x86_64-unknown-linux-gnu/ckb /bin/ckb \
- && cp ckb_v0.103.0_x86_64-unknown-linux-gnu/ckb-cli /bin/ckb-cli \
+ && curl -LO https://github.com/nervosnetwork/ckb/releases/download/v0.104.0/ckb_v0.104.0_x86_64-unknown-linux-gnu.tar.gz \
+ && tar xzf ckb_v0.104.0_x86_64-unknown-linux-gnu.tar.gz \
+ && cp ckb_v0.104.0_x86_64-unknown-linux-gnu/ckb /bin/ckb \
+ && cp ckb_v0.104.0_x86_64-unknown-linux-gnu/ckb-cli /bin/ckb-cli \
  && rm -rf /ckb
-
-# ckb-indexer
-RUN cd /ckb-indexer \
- && curl -LO https://github.com/nervosnetwork/ckb-indexer/releases/download/v0.3.2/ckb-indexer-0.3.2-linux.zip \
- && unzip ckb-indexer-0.3.2-linux.zip && tar xzf ckb-indexer-linux-x86_64.tar.gz \
- && cp /ckb-indexer/ckb-indexer /bin/ckb-indexer \
- && rm -rf /ckb-indexer
 
 ############################ polyjuice-v1.1.5-beta #############################
 # https://github.com/nervosnetwork/godwoken-polyjuice/releases/tag/v1.1.5-beta
