@@ -20,11 +20,13 @@ RUN apt-get update \
  && echo 'Finished installing OS updates'
 
 # ckb
+# TODO: update to https://github.com/nervosnetwork/ckb/releases/tag/v0.104.0
+# https://github.com/nervosnetwork/ckb/releases/download/v0.104.0/ckb_v0.104.0_x86_64-unknown-linux-gnu.tar.gz
 RUN cd /ckb \
- && curl -LO https://github.com/nervosnetwork/ckb/releases/download/v0.104.0/ckb_v0.104.0_x86_64-unknown-linux-gnu.tar.gz \
- && tar xzf ckb_v0.104.0_x86_64-unknown-linux-gnu.tar.gz \
- && cp ckb_v0.104.0_x86_64-unknown-linux-gnu/ckb /bin/ckb \
- && cp ckb_v0.104.0_x86_64-unknown-linux-gnu/ckb-cli /bin/ckb-cli \
+ && curl -LO https://github.com/nervosnetwork/ckb/releases/download/v0.103.0/ckb_v0.103.0_x86_64-unknown-linux-gnu.tar.gz \
+ && tar xzf ckb_v0.103.0_x86_64-unknown-linux-gnu.tar.gz \
+ && cp ckb_v0.103.0_x86_64-unknown-linux-gnu/ckb /bin/ckb \
+ && cp ckb_v0.103.0_x86_64-unknown-linux-gnu/ckb-cli /bin/ckb-cli \
  && rm -rf /ckb
 
 ############################ polyjuice-v1.1.5-beta #############################
