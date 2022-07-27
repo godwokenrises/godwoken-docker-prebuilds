@@ -38,7 +38,7 @@ build-components: prepare-repos
 	cd build/godwoken-polyjuice && make dist && cd -
 	cd build/godwoken-scripts && cd c && make && cd .. && capsule build --release --debug-output && cd ../..
 	cd build/ckb-production-scripts && make all-via-docker
-	cd build/godwoken && rustup component add rustfmt && RUSTFLAGS="-C target-cpu=native" CARGO_PROFILE_RELEASE_LTO=true cargo build --release 
+	cd build/godwoken && rustup component add rustfmt && RUSTFLAGS="-C target-cpu=native" CARGO_PROFILE_RELEASE_LTO=true cargo build --release
 
 build-push:
 	make build-components
