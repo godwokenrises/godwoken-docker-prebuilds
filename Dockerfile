@@ -51,6 +51,11 @@ COPY --from=polyjuice-v1.3.0 /scripts/godwoken-polyjuice/* \
                              /scripts/godwoken-polyjuice-v1.3.0/
 
 
+############################## polyjuice-v1.4.0 ################################
+# This is the latest version of Polyjuice (1.4.0 5626a052).
+# https://github.com/nervosnetwork/godwoken-polyjuice/releases/tag/1.4.0
+# https://github.com/nervosnetwork/godwoken-polyjuice/commit/5626a05279d0f0ad1d6e2aa0e954962b3c777134
+
 #################################### latest ####################################
 # /scripts/omni-lock
 COPY build/ckb-production-scripts/build/omni_lock /scripts/godwoken-scripts/
