@@ -29,8 +29,10 @@ RUN cd /ckb \
  && rm -rf /ckb
 
 # Copy Historical versions
-COPY --from=historical-versions /scripts/godwoken-polyjuice-* /scripts/
 COPY checksum.txt /scripts/
+COPY --from=historical-versions /scripts/godwoken-polyjuice-* /scripts/
+COPY --from=historical-versions /scripts/godwoken-polyjuice/* \
+                                /scripts/godwoken-polyjuice-v1.4.4/
 
 #################################### latest ####################################
 # /scripts/omni-lock

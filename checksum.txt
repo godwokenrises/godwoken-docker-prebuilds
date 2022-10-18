@@ -17,6 +17,7 @@ cb92414b9d489115880bb09c8d0a2df60839d471  /scripts/godwoken-scripts/tron-account
 0f22b0f4249504a01d9eb615ae03176f5a1d5ac3  /scripts/godwoken-scripts/challenge-lock
 dab522b3b5a7c6fd179915f9059dac92891756eb  /scripts/godwoken-scripts/omni_lock
 
+# polyjuice commit: f8385446ce5be78d55bee583a21e15205725b7af
 7e71da732e2e66cac21feac7fe182346ca40ac29  /scripts/godwoken-polyjuice-v1.4.4/validator
 af2783ed65ac1f48cb23020d975a1a36e6f79006  /scripts/godwoken-polyjuice-v1.4.4/validator.debug
 5886c688558da022bcaaffe251be4d457802a067  /scripts/godwoken-polyjuice-v1.4.4/validator_log
