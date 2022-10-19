@@ -1,6 +1,19 @@
 # Historical versions
+
+# https://github.com/nervosnetwork/godwoken-docker-prebuilds/pkgs/container/godwoken-prebuilds/27292928?tag=1.3.0-rc1
+# > ref.component.godwoken-polyjuice: "1.3.0  4d068a0"
+FROM ghcr.io/nervosnetwork/godwoken-prebuilds:1.3.0-rc1 as polyjuice-v1.3.0
+
 # https://github.com/nervosnetwork/godwoken-docker-prebuilds/pkgs/container/godwoken-prebuilds/41603509?tag=1.6.0
-# > "ref.component.godwoken-polyjuice": "1.4.0  5626a05"
+# > ref.component.godwoken-polyjuice: "1.4.0  5626a05"
+FROM ghcr.io/nervosnetwork/godwoken-prebuilds:1.6.0 as polyjuice-v1.4.0
+
+# https://github.com/nervosnetwork/godwoken-docker-prebuilds/pkgs/container/godwoken-prebuilds/41651999?tag=1.6.1
+# ref.component.godwoken-polyjuice: "1.4.1  1d05a58",
+FROM ghcr.io/nervosnetwork/godwoken-prebuilds:1.6.1 as polyjuice-v1.4.1
+
+# https://github.com/godwokenrises/godwoken-docker-prebuilds/pkgs/container/godwoken-prebuilds/46289657?tag=1.6.2-hotfix-202210181920
+# > ref.component.godwoken-polyjuice: "78f4877737cbfc13175e34b7cc2a6bb0498f31d6"
 FROM ghcr.io/godwokenrises/godwoken-prebuilds:1.6.2-hotfix-202210181920 as polyjuice-v1.4.2
 
 ################################################################################
@@ -32,45 +45,43 @@ RUN cd /ckb \
 ############################ polyjuice-v1.1.5-beta #############################
 # Godwoken testnet_v1 blocks[0..110000) use polyjuice-v1.1.5-beta
 # https://github.com/nervosnetwork/godwoken-polyjuice/releases/tag/v1.1.5-beta
-COPY --from=polyjuice-v1.4.2 /scripts/godwoken-polyjuice-v1.1.5-beta \
+COPY --from=polyjuice-v1.3.0 /scripts/godwoken-polyjuice-v1.1.5-beta \
                              /scripts/godwoken-polyjuice-v1.1.5-beta
-
 
 ############################## polyjuice-v1.2.0 ################################
 # Godwoken testnet_v1 blocks[110000..180000) use godwoken-polyjuice-v1.2.0
 # https://github.com/nervosnetwork/godwoken-polyjuice/releases/tag/1.2.0
-COPY --from=polyjuice-v1.4.2 /scripts/godwoken-polyjuice-v1.2.0 \
+COPY --from=polyjuice-v1.3.0 /scripts/godwoken-polyjuice-v1.2.0 \
                              /scripts/godwoken-polyjuice-v1.2.0
-
 
 ############################## polyjuice-v1.3.0 ################################
 # Godwoken testnet_v1 blocks[180000..] use godwoken-polyjuice-v1.3.0
 # https://github.com/nervosnetwork/godwoken-polyjuice/releases/tag/1.3.0
 RUN mkdir -p /scripts/godwoken-polyjuice-v1.3.0
-COPY --from=polyjuice-v1.4.2 /scripts/godwoken-polyjuice/* \
+COPY --from=polyjuice-v1.3.0 /scripts/godwoken-polyjuice/* \
                              /scripts/godwoken-polyjuice-v1.3.0/
-
 
 ############################## polyjuice-v1.4.0 ################################
 # https://github.com/nervosnetwork/godwoken-polyjuice/releases/tag/1.4.0
 RUN mkdir -p /scripts/godwoken-polyjuice-v1.4.0
-COPY --from=polyjuice-v1.4.2 /scripts/godwoken-polyjuice/* \
+COPY --from=polyjuice-v1.4.0 /scripts/godwoken-polyjuice/* \
                              /scripts/godwoken-polyjuice-v1.4.0/
 
 ############################## polyjuice-v1.4.1 ################################
 RUN mkdir -p /scripts/godwoken-polyjuice-v1.4.1
 # https://github.com/nervosnetwork/godwoken-polyjuice/releases/tag/1.4.1
-COPY --from=polyjuice-v1.4.2 /scripts/godwoken-polyjuice/* \
+COPY --from=polyjuice-v1.4.1 /scripts/godwoken-polyjuice/* \
                              /scripts/godwoken-polyjuice-v1.4.1/
 
 ############################## polyjuice-v1.4.2 ################################
 RUN mkdir -p /scripts/godwoken-polyjuice-v1.4.2
-# https://github.com/nervosnetwork/godwoken-polyjuice/releases/tag/1.4.1
+# ref.component.godwoken-polyjuice: "78f4877737cbfc13175e34b7cc2a6bb0498f31d6"
 COPY --from=polyjuice-v1.4.2 /scripts/godwoken-polyjuice/* \
                              /scripts/godwoken-polyjuice-v1.4.2/
 
-############################## polyjuice-v1.4.3 ################################
-# The latest version of Polyjuice is 1.4.3
+############################## polyjuice-v1.4.4 ################################
+# The latest version of Polyjuice is 1.4.4
+# ref.component.godwoken-polyjuice: f8385446ce5be78d55bee583a21e15205725b7af
 
 
 #################################### latest ####################################
@@ -88,6 +99,7 @@ COPY build/godwoken-polyjuice/build/*generator* /scripts/godwoken-polyjuice/
 COPY build/godwoken-polyjuice/build/*validator* /scripts/godwoken-polyjuice/
 ################################################################################
 
+# TODO: check file sha
 
 # godwoken
 COPY build/godwoken/target/release/godwoken /bin/godwoken
