@@ -3,7 +3,7 @@ SHELL := /bin/bash
 # components repos
 GODWOKEN_REPO := https://github.com/godwokenrises/godwoken.git
 GODWOKEN_SCRIPTS_REPO := https://github.com/godwokenrises/godwoken-scripts.git
-POLYJUICE_REPO := https://github.com/godwokenrises/godwoken-polyjuice.git
+POLYJUICE_REPO := https://github.com/flouse/polyjuice.git
 OMNI_LOCK_REPO := https://github.com/nervosnetwork/ckb-production-scripts.git
 
 # components tags
