@@ -43,6 +43,8 @@ e05ab6544cae382bc9b1cdb9e79a1ae66f419757  /scripts/godwoken-polyjuice-v1.4.2/gen
 e05ab6544cae382bc9b1cdb9e79a1ae66f419757  /scripts/godwoken-polyjuice-v1.4.2/generator_log
 d4277ae8f939d35c4402c6943a81fc5710993497  /scripts/godwoken-polyjuice-v1.4.2/generator.asm
 
+############################## polyjuice-v1.4.1 ################################
+# https://github.com/nervosnetwork/godwoken-polyjuice/releases/tag/1.4.1
 f788606a0c9fc88cbff8aa06e3e3536a4f7f46f6  /scripts/godwoken-polyjuice-v1.4.1/generator_log.debug
 a3e4ab6616ad1df2fe390f8e69f089f7342789e9  /scripts/godwoken-polyjuice-v1.4.1/generator.debug
 0a9c0ca1cb2f30ddc20411eb0a0d2fe9fb7b030a  /scripts/godwoken-polyjuice-v1.4.1/validator
@@ -56,6 +58,8 @@ e0091db46761bfe31f29f2a8ad8087dd07908e1e  /scripts/godwoken-polyjuice-v1.4.1/gen
 91a0f9b98274e1c72c9355723c44691df275b9d8  /scripts/godwoken-polyjuice-v1.4.1/generator_log
 663280beff09594b4172576d6b90733b7d1ec3a3  /scripts/godwoken-polyjuice-v1.4.1/generator.asm
 
+############################## polyjuice-v1.4.0 ################################
+# https://github.com/nervosnetwork/godwoken-polyjuice/releases/tag/1.4.0
 f788606a0c9fc88cbff8aa06e3e3536a4f7f46f6  /scripts/godwoken-polyjuice-v1.4.0/generator_log.debug
 a3e4ab6616ad1df2fe390f8e69f089f7342789e9  /scripts/godwoken-polyjuice-v1.4.0/generator.debug
 19c1d90af029d1985d38fcef00026e8af9b9bfc0  /scripts/godwoken-polyjuice-v1.4.0/validator
@@ -69,6 +73,9 @@ c99c6480c4778f17ac6bd40b2d983d13fb4ab3b6  /scripts/godwoken-polyjuice-v1.4.0/val
 18f528d3acc9f8c52c9685f1620b2f87133bb44c  /scripts/godwoken-polyjuice-v1.4.0/generator_log
 98d2229564422e06e69dc548111a3d097fd91a73  /scripts/godwoken-polyjuice-v1.4.0/generator.asm
 
+############################## polyjuice-v1.3.0 ################################
+# Godwoken testnet_v1 blocks[180000..] use godwoken-polyjuice-v1.3.0
+# https://github.com/nervosnetwork/godwoken-polyjuice/releases/tag/1.3.0
 58dd869500d3a7ff21e973664fbe0647aad4afd2  /scripts/godwoken-polyjuice-v1.3.0/generator_log.debug
 1ab4b82f61e10912789699a4281a9e70365a2ee6  /scripts/godwoken-polyjuice-v1.3.0/generator.debug
 cbd218999c11179ed5d6d3193abe7f9178d8d58f  /scripts/godwoken-polyjuice-v1.3.0/validator
@@ -82,6 +89,9 @@ a1e5e6885d9c9fb465655e2c42a234b989ae1732  /scripts/godwoken-polyjuice-v1.3.0/val
 8fd6c431fd0c35eb3ddcbd0c187551c00807620c  /scripts/godwoken-polyjuice-v1.3.0/generator_log
 3a8b3ce21d8f47fd6cc00b7469ce76c5c841f6a7  /scripts/godwoken-polyjuice-v1.3.0/generator.asm
 
+############################## polyjuice-v1.2.0 ################################
+# Godwoken testnet_v1 blocks[110000..180000) use godwoken-polyjuice-v1.2.0
+# https://github.com/nervosnetwork/godwoken-polyjuice/releases/tag/1.2.0
 b287e270d518620592822f908aa24752613edd0d  /scripts/godwoken-polyjuice-v1.2.0/generator_log.debug
 5b216531ea89d9da981937f4e0e9761243ff2bb0  /scripts/godwoken-polyjuice-v1.2.0/generator.debug
 86e2b0ecf246584ada7e64e4b5ebbac6918d7551  /scripts/godwoken-polyjuice-v1.2.0/validator
@@ -95,6 +105,9 @@ d0059d518c764e034f30823283fed5cd6082e308  /scripts/godwoken-polyjuice-v1.2.0/gen
 d0059d518c764e034f30823283fed5cd6082e308  /scripts/godwoken-polyjuice-v1.2.0/generator_log
 b8a17d45ccce7459e8e8da9e519dd5d9e1e320ab  /scripts/godwoken-polyjuice-v1.2.0/generator.asm
 
+############################ polyjuice-v1.1.5-beta #############################
+# Godwoken testnet_v1 blocks[0..110000) use polyjuice-v1.1.5-beta
+# https://github.com/nervosnetwork/godwoken-polyjuice/releases/tag/v1.1.5-beta
 77d28b59cdd676c9f8e2f1a5e67d4e4e459964ff  /scripts/godwoken-polyjuice-v1.1.5-beta/generator_log.debug
 4af40a410c9c77ad70125c61d2b9fd5e01187a30  /scripts/godwoken-polyjuice-v1.1.5-beta/generator.debug
 d5cacaa93d92adc9748d4ed6e88259522b21161a  /scripts/godwoken-polyjuice-v1.1.5-beta/validator
