@@ -29,8 +29,20 @@ RUN cd /ckb \
  && rm -rf /ckb
 
 # Copy Historical versions refer to checksum.txt
+# If <dest> doesn’t exist, it is created along with all missing directories in its path.
 COPY checksum.txt /scripts/
-COPY --from=historical-versions /scripts/godwoken-polyjuice-*/ /scripts/
+COPY --from=historical-versions /scripts/godwoken-polyjuice-v1.1.5-beta/ \
+                                /scripts/godwoken-polyjuice-v1.1.5-beta/
+COPY --from=historical-versions /scripts/godwoken-polyjuice-v1.2.0/ \
+                                /scripts/godwoken-polyjuice-v1.2.0/
+COPY --from=historical-versions /scripts/godwoken-polyjuice-v1.3.0/ \
+                                /scripts/godwoken-polyjuice-v1.3.0/
+COPY --from=historical-versions /scripts/godwoken-polyjuice-v1.4.0/ \
+                                /scripts/godwoken-polyjuice-v1.4.0/
+COPY --from=historical-versions /scripts/godwoken-polyjuice-v1.4.1/ \
+                                /scripts/godwoken-polyjuice-v1.4.1/
+COPY --from=historical-versions /scripts/godwoken-polyjuice-v1.4.2/ \
+                                /scripts/godwoken-polyjuice-v1.4.2/
 COPY --from=historical-versions /scripts/godwoken-polyjuice/* \
                                 /scripts/godwoken-polyjuice-v1.4.4/
 
