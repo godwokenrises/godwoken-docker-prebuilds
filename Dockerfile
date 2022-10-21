@@ -28,9 +28,9 @@ RUN cd /ckb \
  && cp ckb_v0.103.0_x86_64-unknown-linux-gnu/ckb-cli /bin/ckb-cli \
  && rm -rf /ckb
 
-# Copy Historical versions
+# Copy Historical versions refer to checksum.txt
 COPY checksum.txt /scripts/
-COPY --from=historical-versions /scripts/godwoken-polyjuice-* /scripts/
+COPY --from=historical-versions /scripts/godwoken-polyjuice-*/ /scripts/
 COPY --from=historical-versions /scripts/godwoken-polyjuice/* \
                                 /scripts/godwoken-polyjuice-v1.4.4/
 
