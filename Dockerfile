@@ -28,7 +28,7 @@ RUN cd /ckb \
  && cp ckb_v0.103.0_x86_64-unknown-linux-gnu/ckb-cli /bin/ckb-cli \
  && rm -rf /ckb
 
-# Copy Historical versions refer to checksum.txt
+# Copy historical versions (refer to checksum.txt)
 # If <dest> doesn’t exist, it is created along with all missing directories in its path.
 # refer to https://docs.docker.com/engine/reference/builder/#copy
 COPY checksum.txt /scripts/
