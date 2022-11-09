@@ -1,11 +1,11 @@
 name: Docker
 
 on:
-  # Build v1.0.x image every 12 hours
+  # Build image every 12 hours
   # schedule:
   # - cron: '22 */12 * * *'
   push:
-    branches: [ 'main', 'dev', 'v1*', '1.*' ]
+    branches: [ 'main', 'dev*', 'v1*', '1.*' ]
     # Publish semver tags as releases.
     tags: [ 'v*.*.*', '1.*' ]
 
@@ -153,18 +153,18 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: ${{ env.REGISTRY }}${{ startsWith(github.ref, 'refs/tags') && github.repository_owner == 'nervosnetwork' && 'nervos' || github.repository_owner }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}${{ startsWith(github.ref, 'refs/tags') && github.repository_owner == 'godwokenrises' && 'nervos' || github.repository_owner }}/${{ env.IMAGE_NAME }}
           # dynamically set date as a suffix
           tags: |
             type=ref,event=tag
             type=ref,event=branch,suffix=-{{date 'YYYYMMDDHHmm'}}
             type=ref,event=branch
           labels: |
-            maintainer=Nervos Core Dev <dev@nervos.org>
-            org.opencontainers.image.authors=Nervos Core Dev <dev@nervos.org>
-            source.component.godwoken=https://github.com/nervosnetwork/godwoken
-            source.component.godwoken-scripts-Scripts=https://github.com/nervosnetwork/godwoken-scripts
-            source.component.godwoken-polyjuice=https://github.com/nervosnetwork/godwoken-polyjuice
+            maintainer=Godwoken Core Dev
+            org.opencontainers.image.authors=Godwoken Core Dev
+            source.component.godwoken=https://github.com/godwokenrises/godwoken
+            source.component.godwoken-scripts-Scripts=https://github.com/godwokenrises/godwoken-scripts
+            source.component.godwoken-polyjuice=https://github.com/godwokenrises/godwoken-polyjuice
             source.component.ckb-production-scripts=https://github.com/nervosnetwork/ckb-production-scripts
             ref.component.godwoken=${{ steps.prepare.outputs.GODWOKEN_REF }}
             ref.component.godwoken-sha1=${{ steps.prepare.outputs.godwoken-sha1 }}
@@ -190,7 +190,7 @@ jobs:
       # Build and push Docker image with Buildx (don't push on PR)
       # only for new tag
       - name: Build and push Docker image to https://hub.docker.com/r/nervos/godwoken-prebuilds
-        if: ${{ github.repository_owner == 'nervosnetwork' && startsWith(github.ref, 'refs/tags') }}
+        if: ${{ github.repository_owner == 'godwokenrises' && startsWith(github.ref, 'refs/tags') }}
         uses: docker/build-push-action@v2
         with:
           context: .
@@ -218,7 +218,7 @@ jobs:
 
   integration-test:
     needs: docker-build-push
-    uses: nervosnetwork/godwoken-tests/.github/workflows/reusable-integration-test-v1.yml@develop
+    uses: godwokenrises/godwoken-tests/.github/workflows/reusable-integration-test-v1.yml@develop
     with:
       extra_github_env: |
         GODWOKEN_PREBUILD_IMAGE_NAME="${{ needs.docker-build-push.outputs.image_name }}:${{ needs.docker-build-push.outputs.image_tag }}"
