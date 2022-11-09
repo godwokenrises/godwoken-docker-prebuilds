@@ -1,6 +1,6 @@
 # Historical versions refer to checksum.txt
 # https://github.com/godwokenrises/godwoken-docker-prebuilds/pkgs/container/godwoken-prebuilds/46707250?tag=1.6.2-rc5-202210210441
-FROM ghcr.io/godwokenrises/godwoken-prebuilds:1.6.2-poly.1.4.5 as historical-versions
+FROM ghcr.io/godwokenrises/godwoken-prebuilds:dev-poly1.4.6 as historical-versions
 
 ################################################################################
 
@@ -46,8 +46,11 @@ COPY --from=historical-versions /scripts/godwoken-polyjuice-v1.4.2/ \
                                 /scripts/godwoken-polyjuice-v1.4.2/
 COPY --from=historical-versions /scripts/godwoken-polyjuice-v1.4.4/ \
                                 /scripts/godwoken-polyjuice-v1.4.4/
-COPY --from=historical-versions /scripts/godwoken-polyjuice/* \
+COPY --from=historical-versions /scripts/godwoken-polyjuice-v1.4.5/ \
                                 /scripts/godwoken-polyjuice-v1.4.5/
+COPY --from=historical-versions /scripts/godwoken-polyjuice/* \
+                                /scripts/godwoken-polyjuice-v1.4.6/
+# TODO: remove useless versions
 
 #################################### latest ####################################
 # /scripts/omni-lock

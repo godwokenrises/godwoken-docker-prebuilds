@@ -17,6 +17,21 @@ cb92414b9d489115880bb09c8d0a2df60839d471  /scripts/godwoken-scripts/tron-account
 0f22b0f4249504a01d9eb615ae03176f5a1d5ac3  /scripts/godwoken-scripts/challenge-lock
 dab522b3b5a7c6fd179915f9059dac92891756eb  /scripts/godwoken-scripts/omni_lock
 
+############################## polyjuice-v1.4.6 ################################
+# https://github.com/godwokenrises/godwoken-polyjuice/releases/tag/1.4.6
+ab74da9f111f980af23782ace59e344d92d46c47  /scripts/godwoken-polyjuice-v1.4.6/validator
+0684a9216b6734ba99a8dee1620c9d17f5d8e314  /scripts/godwoken-polyjuice-v1.4.6/validator.debug
+dc91baddc5e35eb533f74bf55e6d826aa9cfbc73  /scripts/godwoken-polyjuice-v1.4.6/validator_log
+e9a8be7f52c91a5f7aaab2b7ffd06d76a624ec93  /scripts/godwoken-polyjuice-v1.4.6/validator_log.debug
+bd77600fc95d1478da76975f75618afa82fea499  /scripts/godwoken-polyjuice-v1.4.6/generator_log.debug
+2ae44ba49d92fc677478096f17e1feb4fa36cdff  /scripts/godwoken-polyjuice-v1.4.6/generator.debug
+674d89bbde9b1505767bfda7ef4b7e9c6e1fde69  /scripts/godwoken-polyjuice-v1.4.6/generator
+674d89bbde9b1505767bfda7ef4b7e9c6e1fde69  /scripts/godwoken-polyjuice-v1.4.6/generator.aot
+89161b4c90ee580d549fa2cef6ddbd5bd569601b  /scripts/godwoken-polyjuice-v1.4.6/generator_log.asm
+84ea59bd860e178433014f9b92d86d4caaf8f9b8  /scripts/godwoken-polyjuice-v1.4.6/generator_log.aot
+84ea59bd860e178433014f9b92d86d4caaf8f9b8  /scripts/godwoken-polyjuice-v1.4.6/generator_log
+6591a8dca95a0f68b3322acc754b02ab10b2831c  /scripts/godwoken-polyjuice-v1.4.6/generator.asm
+
 ############################## polyjuice-v1.4.5 ################################
 # https://github.com/godwokenrises/godwoken-polyjuice/releases/tag/1.4.5
 2f749b73a63d022fdcb94e42fb6f924efdcfb8c5  /scripts/godwoken-polyjuice-v1.4.5/validator
