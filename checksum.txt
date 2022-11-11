@@ -1,5 +1,10 @@
-# Command: find /scripts -type f -exec sha1sum {} \;
+# Run command in ghcr.io/godwokenrises/godwoken-prebuilds:dev-poly1.5.0
+# ```bash
+# find /scripts -type f -exec sha1sum {} \;
+# ```
 
+############################## Godwoken scripts ################################
+# https://github.com/godwokenrises/godwoken-scripts/releases/tag/v1.3.0-rc1
 56d24b532b9d790d24ca236782e8ed034b375399  /scripts/godwoken-scripts/sudt-validator
 65556f1157bfa7819befe8cb1cf6af73924fdefa  /scripts/godwoken-scripts/eth-addr-reg-validator
 678e163a475dd82c14f71fec189982643916c5ca  /scripts/godwoken-scripts/meta-contract-validator
@@ -16,6 +21,21 @@ cb92414b9d489115880bb09c8d0a2df60839d471  /scripts/godwoken-scripts/tron-account
 0f2d54a4b0c016404f8f6e80b5d538ee0f4411e8  /scripts/godwoken-scripts/withdrawal-lock
 0f22b0f4249504a01d9eb615ae03176f5a1d5ac3  /scripts/godwoken-scripts/challenge-lock
 dab522b3b5a7c6fd179915f9059dac92891756eb  /scripts/godwoken-scripts/omni_lock
+
+############################## polyjuice-v1.5.0 ################################
+# https://github.com/godwokenrises/godwoken-polyjuice/releases/tag/1.5.0
+f82b92b2c8189d87e1baccd9e491b1ba06b64896  /scripts/godwoken-polyjuice-v1.5.0/validator
+4a405cead970d93b54d3682d1b988815d7566e5b  /scripts/godwoken-polyjuice-v1.5.0/validator.debug
+bc962eec16855eb2b854d3036b0ac4fc47386a9c  /scripts/godwoken-polyjuice-v1.5.0/validator_log
+07921053dd22b8f8af8a9f58699435e22c328822  /scripts/godwoken-polyjuice-v1.5.0/validator_log.debug
+c415d5789453ecaea8b349c7158a5ad1d65eeec5  /scripts/godwoken-polyjuice-v1.5.0/generator_log.debug
+9695481ef6c7f844b183b35d6b9da9ef351d2278  /scripts/godwoken-polyjuice-v1.5.0/generator.debug
+d6bc9842d0ffb0f9b43ef081d5b1559cf6865b55  /scripts/godwoken-polyjuice-v1.5.0/generator
+d6bc9842d0ffb0f9b43ef081d5b1559cf6865b55  /scripts/godwoken-polyjuice-v1.5.0/generator.aot
+9e2d276a59455aaf42cbb35f991749a537a3372e  /scripts/godwoken-polyjuice-v1.5.0/generator_log.asm
+a4874e3de7dec54f8a7f590a57de9e4a85600368  /scripts/godwoken-polyjuice-v1.5.0/generator_log.aot
+a4874e3de7dec54f8a7f590a57de9e4a85600368  /scripts/godwoken-polyjuice-v1.5.0/generator_log
+d26f4a19fa098b1023dfc26b9bc32578103f4e0d  /scripts/godwoken-polyjuice-v1.5.0/generator.asm
 
 ############################## polyjuice-v1.4.6 ################################
 # https://github.com/godwokenrises/godwoken-polyjuice/releases/tag/1.4.6
