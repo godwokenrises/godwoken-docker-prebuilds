@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Query whether a Godwoken readonly node is ready to serve
-# see: https://github.com/nervosnetwork/godwoken/pull/644
+# see: https://github.com/godwokenrises/godwoken/pull/644
 echo '{
   "id": 42,
   "jsonrpc": "2.0",
