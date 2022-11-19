@@ -80,7 +80,7 @@ jobs:
       - name: Print the references of components
         run: |
           echo ref.component.godwoken=${{ steps.prepare.outputs.GODWOKEN_REF }}
-          echo ref.component.godwoken-scripts=${{ steps.prepare.outputs.GODWOKEN_SCRIPTS_REF }}
+          echo ref.component.godwoken-scripts=${{ steps.prepare.outputs.GODWOKEN_REF }}
           echo ref.component.godwoken-polyjuice=${{ steps.prepare.outputs.POLYJUICE_REF }}
           echo ref.component.ckb-production-scripts=${{ steps.prepare.outputs.OMNI_LOCK_REF }}
 
@@ -100,14 +100,14 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            build/godwoken-scripts/build/release/*
-            build/godwoken-scripts/c/build/*-generator
-            build/godwoken-scripts/c/build/*-validator
-            build/godwoken-scripts/c/build/account_locks/*
-          key: component.godwoken-scripts-${{ steps.prepare.outputs.godwoken-scripts-sha1 }}
-      - name: Build godwoken-scripts
+            build/godwoken/gwos/build/release/*
+            build/godwoken/gwos/build/*-generator
+            build/godwoken/gwos/build/*-validator
+            build/godwoken/gwos/build/account_locks/*
+          key: component.godwoken-scripts-${{ hashFiles('build/godwoken/gwos/**') }}
+      - name: Build godwoken-scripts a.k.a gwos
         if: steps.godwoken-scripts-cache.outputs.cache-hit != 'true'
-        working-directory: build/godwoken-scripts
+        working-directory: build/godwoken/gwos
         run: cd c && make && cd .. && capsule build --release --debug-output
 
       - name: Cache of component.godwoken-polyjuice
@@ -163,13 +163,13 @@ jobs:
             maintainer=Godwoken Core Dev
             org.opencontainers.image.authors=Godwoken Core Dev
             source.component.godwoken=https://github.com/godwokenrises/godwoken
-            source.component.godwoken-scripts-Scripts=https://github.com/godwokenrises/godwoken-scripts
+            source.component.godwoken-scripts=https://github.com/godwokenrises/godwoken/tree/develop/gwos
             source.component.godwoken-polyjuice=https://github.com/godwokenrises/godwoken-polyjuice
             source.component.ckb-production-scripts=https://github.com/nervosnetwork/ckb-production-scripts
             ref.component.godwoken=${{ steps.prepare.outputs.GODWOKEN_REF }}
             ref.component.godwoken-sha1=${{ steps.prepare.outputs.godwoken-sha1 }}
-            ref.component.godwoken-scripts=${{ steps.prepare.outputs.GODWOKEN_SCRIPTS_REF }}
-            ref.component.godwoken-scripts-sha1=${{ steps.prepare.outputs.godwoken-scripts-sha1 }}
+            ref.component.godwoken-scripts=${{ steps.prepare.outputs.GODWOKEN_REF }}
+            ref.component.godwoken-scripts-sha1=${{ steps.prepare.outputs.godwoken-sha1 }}
             ref.component.godwoken-polyjuice=${{ steps.prepare.outputs.POLYJUICE_REF }}
             ref.component.godwoken-polyjuice-sha1=${{ steps.prepare.outputs.godwoken-polyjuice-sha1 }}
             ref.component.ckb-production-scripts=${{ steps.prepare.outputs.OMNI_LOCK_REF }}

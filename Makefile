@@ -2,13 +2,11 @@ SHELL := /bin/bash
 
 # components repos
 GODWOKEN_REPO := https://github.com/godwokenrises/godwoken.git
-GODWOKEN_SCRIPTS_REPO := https://github.com/godwokenrises/godwoken-scripts.git
 POLYJUICE_REPO := https://github.com/godwokenrises/godwoken-polyjuice.git
 OMNI_LOCK_REPO := https://github.com/nervosnetwork/ckb-production-scripts.git
 
 # components tags
 GODWOKEN_REF := refs/pull/836/merge # https://github.com/godwokenrises/godwoken/pull/836
-GODWOKEN_SCRIPTS_REF := v1.3.0-rc1 # https://github.com/godwokenrises/godwoken-scripts/compare/v1.1.0-beta...v1.3.0-rc1
 POLYJUICE_REF := 1.5.0 # https://github.com/godwokenrises/godwoken-polyjuice/compare/1.4.6...1.5.0
 OMNI_LOCK_REF := rc_lock
 
@@ -27,8 +25,6 @@ prepare-repos:
 	mkdir -p build
 	$(call prepare_repo,$(GODWOKEN_REPO),$(GODWOKEN_REF),godwoken)
 	echo "::set-output name=GODWOKEN_REF::$(GODWOKEN_REF) $$(cd build/godwoken && git rev-parse --short HEAD)" >> versions
-	$(call prepare_repo,$(GODWOKEN_SCRIPTS_REPO),$(GODWOKEN_SCRIPTS_REF),godwoken-scripts)
-	echo "::set-output name=GODWOKEN_SCRIPTS_REF::$(GODWOKEN_SCRIPTS_REF) $$(cd build/godwoken-scripts && git rev-parse --short HEAD)" >> versions
 	$(call prepare_repo,$(POLYJUICE_REPO),$(POLYJUICE_REF),godwoken-polyjuice)
 	echo "::set-output name=POLYJUICE_REF::$(POLYJUICE_REF) $$(cd build/godwoken-polyjuice && git rev-parse --short HEAD)" >> versions
 	$(call prepare_repo,$(OMNI_LOCK_REPO),$(OMNI_LOCK_REF),ckb-production-scripts)
@@ -36,7 +32,7 @@ prepare-repos:
 
 build-components: prepare-repos
 	cd build/godwoken-polyjuice && make dist && cd -
-	cd build/godwoken-scripts && cd c && make && cd .. && capsule build --release --debug-output && cd ../..
+	cd build/godwoken/gwos && cd c && make && cd .. && capsule build --release --debug-output && cd ../..
 	cd build/ckb-production-scripts && make all-via-docker
 	cd build/godwoken && rustup component add rustfmt && RUSTFLAGS="-C target-cpu=native" CARGO_PROFILE_RELEASE_LTO=true cargo build --release
 
