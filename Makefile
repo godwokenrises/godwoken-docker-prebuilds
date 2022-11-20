@@ -44,10 +44,10 @@ build-push:
 
 test:
 	make build-components
-	docker build . -t nervos/godwoken-prebuilds:latest-test
+	docker build . -t godwokenrises/godwoken-prebuilds:latest-test
 	mkdir -p `pwd`/test-result/scripts
 	mkdir -p `pwd`/test-result/bin
-	docker run -it -d --name dummy nervos/godwoken-prebuilds:latest-test
+	docker run -it -d --name dummy godwokenrises/godwoken-prebuilds:latest-test
 	docker cp dummy:/scripts/. `pwd`/test-result/scripts
 	docker cp dummy:/bin/godwoken `pwd`/test-result/bin
 	docker cp dummy:/bin/gw-tools `pwd`/test-result/bin

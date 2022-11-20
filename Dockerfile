@@ -6,7 +6,7 @@ FROM ghcr.io/godwokenrises/godwoken-prebuilds:dev-poly1.5.0 as historical-versio
 
 FROM ubuntu:focal
 LABEL description="Docker image containing all binaries used by Godwoken, saving you the hassles of building them yourself."
-LABEL maintainer="Nervos Core Dev <dev@nervos.org>"
+LABEL maintainer="Godwoken Core Dev"
 
 RUN mkdir -p /scripts/godwoken-scripts \
  && mkdir -p /scripts/godwoken-polyjuice \
@@ -58,7 +58,7 @@ COPY build/godwoken-polyjuice/build/*generator* \
      build/godwoken-polyjuice/build/*validator* \
      /scripts/godwoken-polyjuice/
 # TODO: remove *.aot in Polyjuice Makefile
-RUN find /scripts -type f -name '*.aot' -exec rm {} \;
+# RUN find /scripts -type f -name '*.aot' -exec rm {} \;
 
 # /scripts/omni-lock and /scripts/godwoken-scripts
 COPY build/ckb-production-scripts/build/omni_lock \
