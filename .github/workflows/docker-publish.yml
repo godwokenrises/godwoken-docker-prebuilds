@@ -18,7 +18,7 @@ env:
 
 jobs:
   docker-build-push:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     # Map the meta step outputs to this job outputs
     outputs:
       image_name: ${{ steps.result.outputs.image_name }}
@@ -137,9 +137,9 @@ jobs:
         with:
           path: |
             build/godwoken/target
-          key: ${{ runner.os }}-cargo-${{ github.sha }}
+          key: ${{ runner.os }}-focal-cargo-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-cargo-
+            ${{ runner.os }}-focal-cargo-
       - name: Build godwoken
         # if: steps.godwoken-cache.outputs.cache-hit != 'true'
         working-directory: build/godwoken

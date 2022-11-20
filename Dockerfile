@@ -4,6 +4,7 @@ FROM ghcr.io/godwokenrises/godwoken-prebuilds:dev-poly1.5.0 as historical-versio
 
 ################################################################################
 
+# https://hub.docker.com/_/ubuntu/
 FROM ubuntu:focal
 LABEL description="Docker image containing all binaries used by Godwoken, saving you the hassles of building them yourself."
 LABEL maintainer="Godwoken Core Dev"
