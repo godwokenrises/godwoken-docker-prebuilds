@@ -80,7 +80,7 @@ jobs:
       - name: Print the references of components
         run: |
           echo ref.component.godwoken=${{ steps.prepare.outputs.GODWOKEN_REF }}
-          echo ref.component.godwoken-scripts=${{ steps.prepare.outputs.GODWOKEN_REF }}
+          echo ref.component.gwos=${{ steps.prepare.outputs.GODWOKEN_REF }}
           echo ref.component.godwoken-polyjuice=${{ steps.prepare.outputs.POLYJUICE_REF }}
           echo ref.component.ckb-production-scripts=${{ steps.prepare.outputs.OMNI_LOCK_REF }}
 
@@ -95,18 +95,18 @@ jobs:
         working-directory: build/ckb-production-scripts
         run: make all-via-docker
 
-      - name: Cache of component.godwoken-scripts
-        id: godwoken-scripts-cache
+      - name: Cache of component.gwos
+        id: gwos-cache
         uses: actions/cache@v3
         with:
           path: |
             build/godwoken/gwos/build/release/*
-            build/godwoken/gwos/build/*-generator
-            build/godwoken/gwos/build/*-validator
-            build/godwoken/gwos/build/account_locks/*
-          key: component.godwoken-scripts-${{ hashFiles('build/godwoken/gwos/**') }}
-      - name: Build godwoken-scripts a.k.a gwos
-        if: steps.godwoken-scripts-cache.outputs.cache-hit != 'true'
+            build/godwoken/gwos/c/build/*-generator
+            build/godwoken/gwos/c/build/*-validator
+            build/godwoken/gwos/c/build/account_locks/*
+          key: component.gwos-${{ hashFiles('build/godwoken/gwos/**') }}
+      - name: Build gwos a.k.a gwos
+        if: steps.gwos-cache.outputs.cache-hit != 'true'
         working-directory: build/godwoken/gwos
         run: cd c && make && cd .. && capsule build --release --debug-output
 
@@ -141,13 +141,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-focal-cargo-
       - name: Build godwoken
-        # if: steps.godwoken-cache.outputs.cache-hit != 'true'
+        if: steps.godwoken-cache.outputs.cache-hit != 'true'
         working-directory: build/godwoken
         # PORTABLE=1 USE_SSE=1 tell rocksdb to target AVX2, that means "mostly portable".
         # see also: https://github.com/nervosnetwork/rust-rocksdb/blob/2de3ae5e5e23a315a477bd24e700eb4f5ef7a378/librocksdb-sys/build_detect_platform#L696-L699
-        run: |
-          cargo clean
-          rustup component add rustfmt && PORTABLE=1 USE_SSE=1 RUSTFLAGS="-C target-cpu=skylake" CARGO_PROFILE_RELEASE_LTO=true cargo build --release
+        run: rustup component add rustfmt && PORTABLE=1 USE_SSE=1 RUSTFLAGS="-C target-cpu=skylake" CARGO_PROFILE_RELEASE_LTO=true cargo build --release
 
       # Extract metadata (tags, labels) for Docker
       # https://github.com/docker/metadata-action
@@ -165,13 +163,13 @@ jobs:
             maintainer=Godwoken Core Dev
             org.opencontainers.image.authors=Godwoken Core Dev
             source.component.godwoken=https://github.com/godwokenrises/godwoken
-            source.component.godwoken-scripts=https://github.com/godwokenrises/godwoken/tree/develop/gwos
+            source.component.gwos=https://github.com/godwokenrises/godwoken/tree/develop/gwos
             source.component.godwoken-polyjuice=https://github.com/godwokenrises/godwoken-polyjuice
             source.component.ckb-production-scripts=https://github.com/nervosnetwork/ckb-production-scripts
             ref.component.godwoken=${{ steps.prepare.outputs.GODWOKEN_REF }}
             ref.component.godwoken-sha1=${{ steps.prepare.outputs.godwoken-sha1 }}
-            ref.component.godwoken-scripts=${{ steps.prepare.outputs.GODWOKEN_REF }}
-            ref.component.godwoken-scripts-sha1=${{ steps.prepare.outputs.godwoken-sha1 }}
+            ref.component.gwos=${{ steps.prepare.outputs.GODWOKEN_REF }}
+            ref.component.gwos-sha1=${{ steps.prepare.outputs.godwoken-sha1 }}
             ref.component.godwoken-polyjuice=${{ steps.prepare.outputs.POLYJUICE_REF }}
             ref.component.godwoken-polyjuice-sha1=${{ steps.prepare.outputs.godwoken-polyjuice-sha1 }}
             ref.component.ckb-production-scripts=${{ steps.prepare.outputs.OMNI_LOCK_REF }}
