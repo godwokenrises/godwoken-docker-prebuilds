@@ -105,7 +105,7 @@ jobs:
             build/godwoken/gwos/c/build/*-validator
             build/godwoken/gwos/c/build/account_locks/*
           key: component.gwos-${{ hashFiles('build/godwoken/gwos/**') }}
-      - name: Build gwos a.k.a gwos
+      - name: Build gwos binaries
         if: steps.gwos-cache.outputs.cache-hit != 'true'
         working-directory: build/godwoken/gwos
         run: cd c && make && cd .. && capsule build --release --debug-output
@@ -163,7 +163,7 @@ jobs:
             maintainer=Godwoken Core Dev
             org.opencontainers.image.authors=Godwoken Core Dev
             source.component.godwoken=https://github.com/godwokenrises/godwoken
-            source.component.gwos=https://github.com/godwokenrises/godwoken/tree/develop/gwos
+            source.component.gwos=https://github.com/godwokenrises/godwoken/tree/${{steps.prepare.outputs.GODWOKEN_REF }}/gwos
             source.component.godwoken-polyjuice=https://github.com/godwokenrises/godwoken-polyjuice
             source.component.ckb-production-scripts=https://github.com/nervosnetwork/ckb-production-scripts
             ref.component.godwoken=${{ steps.prepare.outputs.GODWOKEN_REF }}
