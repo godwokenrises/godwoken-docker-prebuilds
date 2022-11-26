@@ -4,9 +4,10 @@ FROM ghcr.io/godwokenrises/godwoken-prebuilds:dev-poly1.5.0 as historical-versio
 
 ################################################################################
 
+# https://hub.docker.com/_/ubuntu/
 FROM ubuntu:focal
 LABEL description="Docker image containing all binaries used by Godwoken, saving you the hassles of building them yourself."
-LABEL maintainer="Nervos Core Dev <dev@nervos.org>"
+LABEL maintainer="Godwoken Core Dev"
 
 RUN mkdir -p /scripts/godwoken-scripts \
  && mkdir -p /scripts/godwoken-polyjuice \
@@ -50,28 +51,31 @@ COPY --from=historical-versions /scripts/godwoken-polyjuice-v1.4.5/ \
 COPY --from=historical-versions /scripts/godwoken-polyjuice/* \
                                 /scripts/godwoken-polyjuice-v1.5.0/
 
-# TODO: find /scripts -type f -name '*.aot' -exec rm {} \;
-
 #################################### latest ####################################
-# /scripts/omni-lock
-COPY build/ckb-production-scripts/build/omni_lock /scripts/godwoken-scripts/
-
-# /scripts/godwoken-scripts
-COPY build/godwoken-scripts/build/release/* /scripts/godwoken-scripts/
-COPY build/godwoken-scripts/c/build/*-generator /scripts/godwoken-scripts/
-COPY build/godwoken-scripts/c/build/*-validator /scripts/godwoken-scripts/
-COPY build/godwoken-scripts/c/build/account_locks/* /scripts/godwoken-scripts/
+# COPY [--chown=<user>:<group>] ["<src>",... "<dest>"]
 
 # /scripts/godwoken-polyjuice
-COPY build/godwoken-polyjuice/build/*generator* /scripts/godwoken-polyjuice/
-COPY build/godwoken-polyjuice/build/*validator* /scripts/godwoken-polyjuice/
-################################################################################
+COPY build/godwoken-polyjuice/build/*generator* \
+     build/godwoken-polyjuice/build/*validator* \
+     /scripts/godwoken-polyjuice/
+# TODO: remove *.aot in Polyjuice Makefile
+# RUN find /scripts -type f -name '*.aot' -exec rm {} \;
 
+# /scripts/omni-lock and /scripts/godwoken-scripts
+COPY build/ckb-production-scripts/build/omni_lock \
+     build/godwoken/gwos/build/release/* \
+     build/godwoken/gwos/c/build/*-generator \ 
+     build/godwoken/gwos/c/build/*-validator \
+     build/godwoken/gwos/c/build/account_locks/* \
+     /scripts/godwoken-scripts/
 
 # godwoken
-COPY build/godwoken/target/release/godwoken /bin/godwoken
-COPY build/godwoken/target/release/gw-tools /bin/gw-tools
-COPY gw-healthcheck.sh /bin/gw-healthcheck.sh
+COPY build/godwoken/target/release/godwoken \
+     build/godwoken/target/release/gw-tools \
+     gw-healthcheck.sh \
+     /bin/
+################################################################################
+
 
 WORKDIR /deploy
 
