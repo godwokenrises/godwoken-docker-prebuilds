@@ -2,12 +2,10 @@ SHELL := /bin/bash
 
 # components repos
 GODWOKEN_REPO := https://github.com/godwokenrises/godwoken.git
-POLYJUICE_REPO := https://github.com/godwokenrises/godwoken-polyjuice.git
 OMNI_LOCK_REPO := https://github.com/nervosnetwork/ckb-production-scripts.git
 
 # components tags
-GODWOKEN_REF := refs/pull/836/merge # https://github.com/godwokenrises/godwoken/pull/836
-POLYJUICE_REF := 1.5.0 # https://github.com/godwokenrises/godwoken-polyjuice/compare/1.4.6...1.5.0
+GODWOKEN_REF := ca17810c094e639b8acce73b015f8bc0e82e13fa # https://github.com/flouse/godwoken/commits/ca17810c094e639b8acce73b015f8bc0e82e13fa -> refs/pull/836/merge
 OMNI_LOCK_REF := rc_lock
 
 define prepare_repo
@@ -18,20 +16,18 @@ define prepare_repo
 	git fetch origin $(2);\
 	git checkout FETCH_HEAD;\
 	git submodule update --init --recursive --depth=1;\
-	echo "::set-output name=$(3)-sha1::$$(git rev-parse HEAD)" >> ../../versions
+	echo "$(3)-sha1=$$(git rev-parse HEAD)" >> ../../versions
 endef
 
 prepare-repos:
 	mkdir -p build
 	$(call prepare_repo,$(GODWOKEN_REPO),$(GODWOKEN_REF),godwoken)
-	echo "::set-output name=GODWOKEN_REF::$(GODWOKEN_REF) $$(cd build/godwoken && git rev-parse --short HEAD)" >> versions
-	$(call prepare_repo,$(POLYJUICE_REPO),$(POLYJUICE_REF),godwoken-polyjuice)
-	echo "::set-output name=POLYJUICE_REF::$(POLYJUICE_REF) $$(cd build/godwoken-polyjuice && git rev-parse --short HEAD)" >> versions
+	echo "GODWOKEN_REF=$(GODWOKEN_REF) $$(cd build/godwoken && git rev-parse --short HEAD)" >> versions
 	$(call prepare_repo,$(OMNI_LOCK_REPO),$(OMNI_LOCK_REF),ckb-production-scripts)
-	echo "::set-output name=OMNI_LOCK_REF::$(OMNI_LOCK_REF) $$(cd build/ckb-production-scripts && git rev-parse --short HEAD)" >> versions
+	echo "OMNI_LOCK_REF=$(OMNI_LOCK_REF) $$(cd build/ckb-production-scripts && git rev-parse --short HEAD)" >> versions
 
 build-components: prepare-repos
-	cd build/godwoken-polyjuice && make dist && cd -
+	cd build/godwoken/gwos-evm && make dist && cd -
 	cd build/godwoken/gwos && cd c && make && cd .. && capsule build --release --debug-output && cd ../..
 	cd build/ckb-production-scripts && make all-via-docker
 	cd build/godwoken && rustup component add rustfmt && RUSTFLAGS="-C target-cpu=native" CARGO_PROFILE_RELEASE_LTO=true cargo build --release

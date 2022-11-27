@@ -20,8 +20,6 @@ RUN apt-get update \
  && echo 'Finished installing OS updates'
 
 # ckb
-# TODO: update to https://github.com/nervosnetwork/ckb/releases/tag/v0.104.0
-# https://github.com/nervosnetwork/ckb/releases/download/v0.104.0/ckb_v0.104.0_x86_64-unknown-linux-gnu.tar.gz
 RUN cd /ckb \
  && curl -LO https://github.com/nervosnetwork/ckb/releases/download/v0.103.0/ckb_v0.103.0_x86_64-unknown-linux-gnu.tar.gz \
  && tar xzf ckb_v0.103.0_x86_64-unknown-linux-gnu.tar.gz \
@@ -55,8 +53,8 @@ COPY --from=historical-versions /scripts/godwoken-polyjuice/* \
 # COPY [--chown=<user>:<group>] ["<src>",... "<dest>"]
 
 # /scripts/godwoken-polyjuice
-COPY build/godwoken-polyjuice/build/*generator* \
-     build/godwoken-polyjuice/build/*validator* \
+COPY build/godwoken/gwos-evm/build/*generator* \
+     build/godwoken/gwos-evm/build/*validator* \
      /scripts/godwoken-polyjuice/
 # TODO: remove *.aot in Polyjuice Makefile
 # RUN find /scripts -type f -name '*.aot' -exec rm {} \;

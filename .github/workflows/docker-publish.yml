@@ -75,13 +75,13 @@ jobs:
         run: |
           make prepare-repos
           echo "Record the component's reference to the outputs of this step"
-          cat versions
+          cat versions >> $GITHUB_OUTPUT
 
       - name: Print the references of components
         run: |
           echo ref.component.godwoken=${{ steps.prepare.outputs.GODWOKEN_REF }}
           echo ref.component.gwos=${{ steps.prepare.outputs.GODWOKEN_REF }}
-          echo ref.component.godwoken-polyjuice=${{ steps.prepare.outputs.POLYJUICE_REF }}
+          echo ref.component.gwos-evm=${{ steps.prepare.outputs.GODWOKEN_REF }}
           echo ref.component.ckb-production-scripts=${{ steps.prepare.outputs.OMNI_LOCK_REF }}
 
       - name: Cache of component.ckb-production-scripts
@@ -110,17 +110,17 @@ jobs:
         working-directory: build/godwoken/gwos
         run: cd c && make && cd .. && capsule build --release --debug-output
 
-      - name: Cache of component.godwoken-polyjuice
+      - name: Cache of component.gwos-evm
         id: godwoken-polyjuice-cache
         uses: actions/cache@v3
         with:
           path: |
-            build/godwoken-polyjuice/build/*generator*
-            build/godwoken-polyjuice/build/*validator*
-          key: component.godwoken-polyjuice-${{ steps.prepare.outputs.godwoken-polyjuice-sha1 }}
+            build/godwoken/gwos-evm/build/*generator*
+            build/godwoken/gwos-evm/build/*validator*
+          key: component.gwos-evm-${{ hashFiles('build/godwoken/gwos-evm/**') }}
       - name: Build godwoken-polyjuice
         if: steps.godwoken-polyjuice-cache.outputs.cache-hit != 'true'
-        working-directory: build/godwoken-polyjuice
+        working-directory: build/godwoken/gwos-evm
         run: make all-via-docker
 
       - name: Cache of component.godwoken
@@ -162,16 +162,16 @@ jobs:
           labels: |
             maintainer=Godwoken Core Dev
             org.opencontainers.image.authors=Godwoken Core Dev
-            source.component.godwoken=https://github.com/godwokenrises/godwoken
+            source.component.godwoken=https://github.com/godwokenrises/godwoken/tree/${{steps.prepare.outputs.GODWOKEN_REF }}
             source.component.gwos=https://github.com/godwokenrises/godwoken/tree/${{steps.prepare.outputs.GODWOKEN_REF }}/gwos
-            source.component.godwoken-polyjuice=https://github.com/godwokenrises/godwoken-polyjuice
+            source.component.gwos-evm=https://github.com/godwokenrises/godwoken/tree/${{steps.prepare.outputs.GODWOKEN_REF }}/gwos-evm
             source.component.ckb-production-scripts=https://github.com/nervosnetwork/ckb-production-scripts
             ref.component.godwoken=${{ steps.prepare.outputs.GODWOKEN_REF }}
             ref.component.godwoken-sha1=${{ steps.prepare.outputs.godwoken-sha1 }}
             ref.component.gwos=${{ steps.prepare.outputs.GODWOKEN_REF }}
             ref.component.gwos-sha1=${{ steps.prepare.outputs.godwoken-sha1 }}
-            ref.component.godwoken-polyjuice=${{ steps.prepare.outputs.POLYJUICE_REF }}
-            ref.component.godwoken-polyjuice-sha1=${{ steps.prepare.outputs.godwoken-polyjuice-sha1 }}
+            ref.component.gwos-evm=${{ steps.prepare.outputs.GODWOKEN_REF }}
+            ref.component.gwos-evm-sha1=${{ steps.prepare.outputs.godwoken-sha1 }}
             ref.component.ckb-production-scripts=${{ steps.prepare.outputs.OMNI_LOCK_REF }}
             ref.component.ckb-production-scripts-sha1=${{ steps.prepare.outputs.ckb-production-scripts-sha1 }}
 
