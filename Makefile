@@ -5,7 +5,7 @@ GODWOKEN_REPO := https://github.com/godwokenrises/godwoken.git
 OMNI_LOCK_REPO := https://github.com/nervosnetwork/ckb-production-scripts.git
 
 # components tags
-GODWOKEN_REF := ca17810c094e639b8acce73b015f8bc0e82e13fa # https://github.com/flouse/godwoken/commits/ca17810c094e639b8acce73b015f8bc0e82e13fa -> refs/pull/836/merge
+GODWOKEN_REF := refs/pull/836/merge # https://github.com/godwokenrises/godwoken/pull/836
 OMNI_LOCK_REF := rc_lock
 
 define prepare_repo
