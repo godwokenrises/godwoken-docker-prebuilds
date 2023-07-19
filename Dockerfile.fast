@@ -1,10 +1,8 @@
-FROM ubuntu:21.04
+FROM ubuntu:20.04
 
 RUN mkdir -p /scripts/godwoken-scripts \
  && mkdir -p /scripts/godwoken-polyjuice \
- && mkdir -p /scripts/clerkb \
- && mkdir /ckb \
- && mkdir /ckb-indexer
+ && mkdir -p /scripts/clerkb
 
 RUN apt-get update \
  && apt-get dist-upgrade -y \
@@ -12,20 +10,13 @@ RUN apt-get update \
  && apt-get clean \
  && echo 'Finished installing OS updates'
 
-# ckb
-RUN cd /ckb \
- && curl -LO https://github.com/nervosnetwork/ckb/releases/download/v0.101.7/ckb_v0.101.7_x86_64-unknown-linux-gnu.tar.gz \
- && tar xzf ckb_v0.101.7_x86_64-unknown-linux-gnu.tar.gz \
- && cp ckb_v0.101.7_x86_64-unknown-linux-gnu/ckb /bin/ckb \
- && cp ckb_v0.101.7_x86_64-unknown-linux-gnu/ckb-cli /bin/ckb-cli \
+# Install ckb and ckb-cli.
+RUN mkdir -p /ckb && cd /ckb \
+ && curl -LO https://github.com/nervosnetwork/ckb/releases/download/v0.111.0-rc8/ckb_v0.111.0-rc8_x86_64-unknown-linux-gnu-portable.tar.gz \
+ && tar xzf ckb_v0.111.0-rc8_x86_64-unknown-linux-gnu-portable.tar.gz \
+ && cp ckb_v0.111.0-rc8_x86_64-unknown-linux-gnu-portable/ckb /bin/ \
+ && cp ckb_v0.111.0-rc8_x86_64-unknown-linux-gnu-portable/ckb-cli /bin/ \
  && rm -rf /ckb
-
-# ckb-indexer
-RUN cd /ckb-indexer \
- && curl -LO https://github.com/nervosnetwork/ckb-indexer/releases/download/v0.3.2/ckb-indexer-0.3.2-linux.zip \
- && unzip ckb-indexer-0.3.2-linux.zip && tar xzf ckb-indexer-linux-x86_64.tar.gz \
- && cp /ckb-indexer/ckb-indexer /bin/ckb-indexer \
- && rm -rf /ckb-indexer
 
 # /scripts/clerkb
 COPY build/clerkb/build/debug/poa /scripts/clerkb/

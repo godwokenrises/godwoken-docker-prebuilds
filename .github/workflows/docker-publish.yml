@@ -18,7 +18,8 @@ env:
 
 jobs:
   docker-build-push:
-    runs-on: ubuntu-latest
+    # Same as image base
+    runs-on: ubuntu-20.04
     # Map the meta step outputs to this job outputs
     outputs:
       image_name: ${{ steps.result.outputs.image_name }}
