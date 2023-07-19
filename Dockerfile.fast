@@ -22,11 +22,13 @@ RUN mkdir -p /ckb && cd /ckb \
 COPY build/clerkb/build/debug/poa /scripts/clerkb/
 COPY build/clerkb/build/debug/state /scripts/clerkb/
 
-# /scripts/godwoken-scripts
-COPY build/godwoken-scripts/build/release/* /scripts/godwoken-scripts/
-COPY build/godwoken-scripts/c/build/*-generator /scripts/godwoken-scripts/
-COPY build/godwoken-scripts/c/build/*-validator /scripts/godwoken-scripts/
-COPY build/godwoken-scripts/c/build/account_locks/* /scripts/godwoken-scripts/
+# Copy from previous image because godwoken-scripts cannot be built as is.
+COPY --from=ghcr.io/nervosnetwork/godwoken-prebuilds:v0.10.7 /scripts/godwoken-scripts /scripts/godwoken-scripts
+# # /scripts/godwoken-scripts
+# COPY build/godwoken-scripts/build/release/* /scripts/godwoken-scripts/
+# COPY build/godwoken-scripts/c/build/*-generator /scripts/godwoken-scripts/
+# COPY build/godwoken-scripts/c/build/*-validator /scripts/godwoken-scripts/
+# COPY build/godwoken-scripts/c/build/account_locks/* /scripts/godwoken-scripts/
 
 # /scripts/godwoken-polyjuice
 COPY build/godwoken-polyjuice/build/*generator* /scripts/godwoken-polyjuice/
