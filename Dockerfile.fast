@@ -12,10 +12,10 @@ RUN apt-get update \
 
 # Install ckb and ckb-cli.
 RUN mkdir -p /ckb && cd /ckb \
- && curl -LO https://github.com/nervosnetwork/ckb/releases/download/v0.111.0-rc8/ckb_v0.111.0-rc8_x86_64-unknown-linux-gnu-portable.tar.gz \
- && tar xzf ckb_v0.111.0-rc8_x86_64-unknown-linux-gnu-portable.tar.gz \
- && cp ckb_v0.111.0-rc8_x86_64-unknown-linux-gnu-portable/ckb /bin/ \
- && cp ckb_v0.111.0-rc8_x86_64-unknown-linux-gnu-portable/ckb-cli /bin/ \
+ && curl -LO https://github.com/nervosnetwork/ckb/releases/download/v0.111.0/ckb_v0.111.0_x86_64-unknown-linux-gnu-portable.tar.gz \
+ && tar xzf ckb_v0.111.0_x86_64-unknown-linux-gnu-portable.tar.gz \
+ && cp ckb_v0.111.0_x86_64-unknown-linux-gnu-portable/ckb /bin/ \
+ && cp ckb_v0.111.0_x86_64-unknown-linux-gnu-portable/ckb-cli /bin/ \
  && rm -rf /ckb
 
 # /scripts/clerkb
@@ -24,15 +24,17 @@ COPY build/clerkb/build/debug/state /scripts/clerkb/
 
 # Copy from previous image because godwoken-scripts cannot be built as is.
 COPY --from=ghcr.io/nervosnetwork/godwoken-prebuilds:v0.10.7 /scripts/godwoken-scripts /scripts/godwoken-scripts
-# # /scripts/godwoken-scripts
+# /scripts/godwoken-scripts
 # COPY build/godwoken-scripts/build/release/* /scripts/godwoken-scripts/
 # COPY build/godwoken-scripts/c/build/*-generator /scripts/godwoken-scripts/
 # COPY build/godwoken-scripts/c/build/*-validator /scripts/godwoken-scripts/
 # COPY build/godwoken-scripts/c/build/account_locks/* /scripts/godwoken-scripts/
 
+# Copy from previous image because godwoken-scripts cannot be built as is.
+COPY --from=ghcr.io/nervosnetwork/godwoken-prebuilds:v0.10.7 /scripts/godwoken-polyjuice /scripts/godwoken-polyjuice
 # /scripts/godwoken-polyjuice
-COPY build/godwoken-polyjuice/build/*generator* /scripts/godwoken-polyjuice/
-COPY build/godwoken-polyjuice/build/*validator* /scripts/godwoken-polyjuice/
+# COPY build/godwoken-polyjuice/build/*generator* /scripts/godwoken-polyjuice/
+# COPY build/godwoken-polyjuice/build/*validator* /scripts/godwoken-polyjuice/
 
 # godwoken
 COPY build/godwoken/target/release/godwoken /bin/godwoken

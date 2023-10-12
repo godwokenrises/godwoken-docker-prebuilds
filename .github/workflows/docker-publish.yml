@@ -5,9 +5,9 @@ on:
   # schedule:
   #   - cron: '22 3 * * *'
   push:
-    branches: [ main, 'v0.10*', '0.10*' ]
+    branches: [ main, 'v0.11*', '0.11*' ]
     # Publish semver tags as releases.
-    tags: [ 'v*.*.*', '0.10.*', '1.*' ]
+    tags: [ 'v*.*.*', '0.11.*', '1.*' ]
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -98,7 +98,7 @@ jobs:
         working-directory: build/clerkb
         run: yarn && make all-via-docker
 
-      # Skip building godwoken-scripts for now.
+      # Skip building godwoken-scripts because Godwoken v0 is in maintenance mode with no change.
       # - name: Cache of component.godwoken-scripts
       #   id: godwoken-scripts-cache
       #   uses: actions/cache@v3
@@ -114,18 +114,19 @@ jobs:
       #   working-directory: build/godwoken-scripts
       #   run: cd c && make && cd .. && capsule build --release --debug-output
 
-      - name: Cache of component.godwoken-polyjuice
-        id: godwoken-polyjuice-cache
-        uses: actions/cache@v3
-        with:
-          path: |
-            build/godwoken-polyjuice/build/*generator*
-            build/godwoken-polyjuice/build/*validator*
-          key: component.godwoken-polyjuice-${{ steps.prepare.outputs.godwoken-polyjuice-sha1 }}
-      - name: Build godwoken-polyjuice
-        if: steps.godwoken-polyjuice-cache.outputs.cache-hit != 'true'
-        working-directory: build/godwoken-polyjuice
-        run: make all-via-docker
+      # Skip building godwoken-polyjuice because Godwoken v0 is in maintenance mode with no change.
+      # - name: Cache of component.godwoken-polyjuice
+      #   id: godwoken-polyjuice-cache
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: |
+      #       build/godwoken-polyjuice/build/*generator*
+      #       build/godwoken-polyjuice/build/*validator*
+      #     key: component.godwoken-polyjuice-${{ steps.prepare.outputs.godwoken-polyjuice-sha1 }}
+      # - name: Build godwoken-polyjuice
+      #   if: steps.godwoken-polyjuice-cache.outputs.cache-hit != 'true'
+      #   working-directory: build/godwoken-polyjuice
+      #   run: make all-via-docker
 
       - name: Cache of component.godwoken
         id: godwoken-cache
